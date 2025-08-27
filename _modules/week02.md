@@ -3,7 +3,7 @@ title: Week 2
 ---
 
 Aug 26
-: [2 - Coordinates](lecture2.pdf)
+: [2 - Rotation Matrices](lecture2.pdf)
 
 Aug 28
 : 3 - Transformations
