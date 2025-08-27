@@ -1,0 +1,16 @@
+
+.DS_Store
+
+*.out
+
+*.gz
+
+*.fdb_latexmk
+
+*.fls
+
+*.aux
+
+*.log
+
+_site/

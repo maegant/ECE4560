@@ -1,0 +1,14 @@
+---
+layout: page
+title: SO-101 Robot Arm
+permalink: /assignment1-so101/
+parent: 1 - Project Threads
+---
+
+![SO-101 Robot Arm]({{ site.baseurl }}/assets/SO101_Follower.webp)
+
+This thread is brand new for Fall 2025! So it is currently the least documented, but students will have the opportunity to follow along and help develop new Python code for this robot.
+
+Overall, this track features the new open-sourced [SO-101 Arm](https://github.com/TheRobotStudio/SO-ARM100) designed by RobotStudio in collaboration with Hugging Face.
+
+Documentation for this track will be updated weekly, but some videos of the hardware be found [here](https://huggingface.co/docs/lerobot/so101).

@@ -1,0 +1,180 @@
+---
+layout: page
+title: SO-101 Robot Arm
+permalink: /assignment2-so101/
+parent: 2 - Setup
+---
+
+<!-- 1. Because this is the first year using the SO-101 robot arms, you will first need to assemble it following the instructions [here](https://huggingface.co/docs/lerobot/en/so101). For this assignment, each group will need one "Follower" arm and one "Leader" arm. For the remainder of the course we will mostly be using the "Follower" arm. -->
+
+## The SO-101 Robot Arms 
+For this first module, we will be setting up, calibrating, and running a teleoperation script to verify successful calibration. This will require using both the "Follower" arm and the "Leader" arm. If you have chosen to build your own robot by purchasing your own kit, I recommend only building your own "Follower" arm and using a leader arm for the class just for this initial module.
+
+If you are building your own robot, I also recommend following the print/build/setup instructions [here](https://wiki.seeedstudio.com/lerobot_so100m/#install-lerobot).
+
+| Follower Arm | Leader Arm |
+|:------------:|:----------:|
+| ![SO101 Follower]({{ site.baseurl }}/assets/SO101_Follower.webp) | ![SO101 Leader]({{ site.baseurl }}/assets/SO101_Leader.webp) |
+
+The purpose of the "leader" arm is purely for teleoperation -- this robot uses motors with a lower gear reduction to make it easier to move around by hand. Alternatively, the "follower" arm is meant to be a normal autonomous robot arm, so it uses more powerful (but less easily movable) motors.
+
+## Setup
+If you are using the robot arms (or even just the leader arm) in lab, please follow the setup instructions below. Since we are sharing the lab, I am afraid that you will have to setup and cleanup the manipulator each time. Here is how the setup goes:
+
+1. First, you'll have to move the other lab's stuff by sort of piling it up in the corner.
+
+<p align="center">
+    <img src="{{ site.baseurl }}/assets/setup01_workstation.png" alt="SO-101 Setup Example" width="500"/>
+</p>
+
+2. Second, grab a leader/follow manipulator pair the shelf and bring it to desk. You will need the robot arms, two 5V power supplies (one per arm), two usb-c cables (again, one per arm), and four c-clamps.
+
+3. Mount the manipulators to the table using the 4 c-clamps as shown below. 
+
+4. Connect one 5V power supply to each manipulator arm using the barrel connectors.
+
+## Python Setup
+Before communicating with the robots, you will need to configure your Python environment and install LeRobot (the low-level communication package for the robots).
+
+### Installing Python
+1. First, you will need to make sure that you have Python installed on your computer. I recommend doing this using vscode, which is discussed more next.
+
+2. While there are many ways to edit/run python code, I highly recommend using [Visual Studio Code](https://code.visualstudio.com/). This software also makes it easy to install python by downloading the official [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python). For more information on using python in vscode, I recommend [this tutorial](https://code.visualstudio.com/docs/python/python-tutorial).
+
+### Installing Miniconda
+Since python packages can quickly conflict and cause problems, we will be utilizing conda to create and manage python environments. We will be specifically utilizing Conda (miniconda to be exact) to manage our Python environments. 
+
+1. Follow the installation instructions [here](https://www.anaconda.com/docs/getting-started/miniconda/main). 
+
+2. You should be able to verify that Conda was installed properly by running any conda command. For example:
+- ``conda list`` -> Displays a list of packages installed in your active environment and their versions.
+- ``conda --version`` -> Should display conda’s version number
+
+### Conda Environment Setup
+Note that these steps are taken from [the official setup instructions](https://huggingface.co/docs/lerobot/installation). I have rewritten them here for clarity:
+
+1. First, we will create a fresh conda environment for lerobot
+```bash
+conda create -y -n so101 python=3.10
+```
+
+2. After creating the conda environment, you will need to activate it. You will also need to repeat this step to activate the environment every time you open a new terminal. 
+```bash
+conda activate so101
+```
+
+3. Install ffmpeg into the conda environment
+```bash
+conda install ffmpeg=7.1.1 -c conda-forge
+```
+
+### Install LeRobot Code
+We will need to clone the LeRobot repository (or pip install it) in order to run the open-source calibration and teleoperation code. For the course, I recommend cloning the repository so that you can more easily see the base code. If you are uncomfortable with git, you can also install the package using `pip`, those instructions are provided [here](https://huggingface.co/docs/lerobot/installation#installation-from-pypi). The instructions for cloning the git repository and installing the toolbox is outlined below.
+
+1. Open a terminal and navigate to a folder where you want to store the code for the lab.
+
+2. Clone the Lerobot git repository
+```bash
+git clone https://github.com/huggingface/lerobot.git
+cd lerobot
+```
+
+3. Install the library in editable mode
+```bash
+pip install -e .
+```
+
+4. Install Feetech SDK (the motor software development kit)
+```bash
+pip install -e ".[feetech]"
+```
+
+## Setting up communication 
+Data is communicated from your computer to the robot arms via the two usb-c cables. To communicate properly, we will need to first identify and store the ports associated with each robot. 
+
+1. First, connect both robot arms to your computer using the two usb-c cables. 
+
+2. Second, connect power to both robot arms using two 5V power cables.
+
+3. After connecting all of the cables, we can find the port for each bus servo adapter (the controller board on the robot). To do this, we will run the following code, one time for each cable. When the command is run, follow the prompt and unplug the cable when prompted. 
+```bash
+lerobot-find-port
+```
+The cable that was unplugged will correspond to the robot with the associated servo adaptor (MotorBus) port.
+
+An example output is shown below:
+
+### Example on Mac
+```bash
+Finding all available ports for the MotorBus.
+['/dev/tty.usbmodem575E0032081', '/dev/tty.usbmodem575E0031751']
+Remove the USB cable from your MotorsBus and press Enter when done.
+
+[...Disconnect corresponding leader or follower arm and press Enter...]
+
+The port of this MotorsBus is /dev/tty.usbmodem575E0032081
+Reconnect the USB cable.
+```
+Where the found port is: `/dev/tty.usbmodem575E0032081` corresponding to your leader or follower arm.
+
+
+### Example on Linux
+On Linux, you might need to give access to the USB ports by running:
+```bash
+sudo chmod 666 /dev/ttyACM0
+sudo chmod 666 /dev/ttyACM1
+```
+
+The example output on linux should be:
+```bash
+Finding all available ports for the MotorBus.
+['/dev/ttyACM0', '/dev/ttyACM1']
+Remove the usb cable from your MotorsBus and press Enter when done.
+
+[...Disconnect corresponding leader or follower arm and press Enter...]
+
+The port of this MotorsBus is /dev/ttyACM1
+Reconnect the USB cable.
+```
+Where the found port is: `/dev/ttyACM1` corresponding to your leader or follower arm.
+
+4. Copy your MotorBus Ports to an empty file!!! These will be used in the calibration scripts next.
+
+## Calibration
+Next, you’ll need to calibrate your robot. This process will save a script to your PC that is required to properly use the robot arms. This process differs slightly based on which robot arm you are calibrating:
+
+### Follower arm calibration
+Run the following command or API example to calibrate the follower arm. The video [here](https://huggingface.co/docs/lerobot/so101?setup_motors=Command&example=Linux&calibrate_follower=Command#calibration-video) shows how to perform this calibration. First you need to move the robot to the position where all joints are in the middle of their ranges. Then after pressing enter you have to move each joint through its full range of motion.
+
+```bash
+lerobot-calibrate \
+    --robot.type=so101_follower \
+    --robot.port=/dev/tty.usbmodem58760431541 \ # <- The port of your robot
+    --robot.id=my_awesome_follower_arm # <- Give the robot a unique name
+```
+
+
+### Leader arm calibration
+Do the same steps to calibrate the leader arm, run the following command or API example:
+
+```bash
+lerobot-calibrate \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/tty.usbmodem58760431551 \ # <- The port of your robot
+    --teleop.id=my_awesome_leader_arm # <- Give the robot a unique name
+```
+
+## Teleoperation
+Once you are connected and calibrated, you are ready to run teleoperation! 
+
+1. Run the following in a terminal. Note that you will need to update the ports and robot ids to the ones you identified and used in the above calibration commands:
+```bash
+python -m lerobot.teleoperate \
+    --robot.type=so101_follower \
+    --robot.port=/dev/tty.usbmodem58760431541 \ # <- The port of your follower arm robot
+    --robot.id=my_awesome_follower_arm \ # <- The unique name of your follower arm
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/tty.usbmodem58760431551 \  # <- The port of your leader arm robot
+    --teleop.id=my_awesome_leader_arm # <- The unique name of your leader arm
+```
+
