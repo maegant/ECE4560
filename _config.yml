@@ -22,7 +22,7 @@ title: ECE 4560
 email: mtucker@gatech.edu
 description: >- # this means to ignore newlines until "baseurl:"
   Course website for Georgia Tech course ECE 4560: Introduction to Robotics and Automation
-baseurl: "/ECE4560" # the subpath of your site, e.g. /blog
+baseurl: "/ECE4560-website" # the subpath of your site, e.g. /blog
 url: "https://maegant.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: 
 github_username:  maegant
