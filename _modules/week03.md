@@ -3,7 +3,7 @@ title: Week 3
 ---
 
 September 2
-: 4 - Homogeneous Coordinates
+: [4 - Homogeneous Coordinates](lecture4.pdf)
 
 September 4
 : 5 - Introduction to Velocity
