@@ -49,6 +49,18 @@ defaults:
     values:
       layout: module
 
+# Callouts with kramdown
+callouts:
+  warning:
+    title: Warning
+    color: red
+  note:
+    title: Note
+    color: purple
+  important:
+    title: Important
+    color: yellow
+
 
 # Aux links for the upper right navigation
 nav_external_links:
