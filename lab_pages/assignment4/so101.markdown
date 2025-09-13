@@ -252,7 +252,14 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
 ```
 
 This should result in the following motion:
-<iframe width="560" height="315" src="https://www.youtube.com/embed/zZnoc47SNEU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div class="video-container">
+  <iframe
+    src="https://www.youtube.com/embed/zZnoc47SNEU"
+    frameborder="0"
+    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+  ></iframe>
+</div>
 
 ## Submission Details
 To document the lab for this week, please upload a screen recording of you running your mujoco simulation and upload it to youtube (it can be unlisted). Then please include a link to the video with the homework submission. Please also write a small report of any issues/difficulties that you faced.

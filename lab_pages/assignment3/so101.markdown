@@ -250,6 +250,16 @@ Lastly, use your helper functions to complete the movements as specified before:
 > ```
 > If your robot is ever "stuck" in a certain position, you can also disable the motors by "power-cycling" the motors (unplugging/plugging in power). 
 
+An example of the desired robot behavior is shown in the following video:
+<div class="video-container">
+  <iframe
+    src="https://www.youtube.com/embed/LwS1OE5hEbM"
+    frameborder="0"
+    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+  ></iframe>
+</div>
 
-## Homework Submission
+## Submission Details
 For the homework assignment, please take a video of your robot motion, upload it to youtube (it can be as a "unlisted" video), and include the link in your homework assignment. Also write any challenges/difficulties that you had when writing/executing the code.
+
