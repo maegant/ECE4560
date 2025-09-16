@@ -3,7 +3,7 @@ title: Week 5
 ---
 
 September 16
-: 7 - Vectors
+: [7 - Velocity Overview](lecture7.pdf)
 
 September 18
 : 8 - Exponential Representation of Rotations
