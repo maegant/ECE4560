@@ -6,7 +6,7 @@ September 16
 : [7 - Velocity Overview](lecture7.pdf)
 
 September 18
-: 8 - Exponential Representation of Rotations
+: [8 - Exponential Representation of Rotations](lecture8.pdf)
 
 September 19
 : **HW1 4 due**{: .label .label-red }
