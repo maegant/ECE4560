@@ -92,6 +92,7 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
 To "simulate" our SO101 code as closely as possible, we will create a few helper functions to replicate the dictionary nature of the robot positions and switch between radians and degrees (MuJoCo uses radians, but SO101 uses degrees and normalizes the gripper to the range 0-100).  
 
 1. Create a new helper file named `so101_mujoco_utils.py`:
+
 ```python
 import time
 import mujoco
@@ -242,6 +243,7 @@ Use these helper functions to create a new simulation file (named something like
 4. Returns to the starting position across a duration of 2.0 seconds.
 
 Note that since the `move_to_position` and `hold_position` functions call `mujoco.mj_step()` inside of the command, your simulation code can be only simplified to only call the helper functions after opening the viewer:
+
 ```python
 with mujoco.viewer.launch_passive(m, d) as viewer:
 
