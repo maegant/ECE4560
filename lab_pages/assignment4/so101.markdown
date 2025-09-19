@@ -190,6 +190,7 @@ Note that you will need to pause the simulation before you can manually adjust t
 
 ## Replicate Robot Motion
 To replicate last week, we will need two final helper functions. These helper functions will replicate our `move_to_pose` and `hold_position` functions from last week:
+
 ```python
 import mujoco
 
