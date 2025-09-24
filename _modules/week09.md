@@ -3,7 +3,7 @@ title: Week 9
 ---
 
 October 14
-: No Class - Fall Break
+: 13 - Inverse Kinematics 1
 
 October 16
 : 14 - Inverse Kinematics 2
