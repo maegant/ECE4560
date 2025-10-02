@@ -6,4 +6,4 @@ September 30
 : **Midterm Exam**{: .label .label-purple }
 
 October 2
-: 11 - Introduction to Manipulators
+: [11 - Introduction to Manipulators](lecture11.pdf)
