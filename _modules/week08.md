@@ -8,7 +8,5 @@ October 7
 October 9
 : 12 - Forward Kinematics
 
-October 10
-: **HW1 6 due**{: .label .label-red }
 
 
