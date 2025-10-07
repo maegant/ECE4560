@@ -8,11 +8,20 @@ parent: 6 - Pick and Place
 <!-- 1. Because this is the first year using the SO-101 robot arms, you will first need to assemble it following the instructions [here](https://huggingface.co/docs/lerobot/en/so101). For this assignment, each group will need one "Follower" arm and one "Leader" arm. For the remainder of the course we will mostly be using the "Follower" arm. -->
 
 ## The SO-101 Robot Arms 
+{: .no_toc }
+
 For this module, we will be writing code to calculating the forward kinematics for our SO-101 robot arms and executing a simple "Pick and Place" maneuver from pre-determined joint angles. This approach is often used for manufacturing robots where the starting and ending configurations are known apriori. But once we learn inverse kinematics, we will repeat this module using only the desired starting and ending cartesian positions of our end-effector.
 
-## Assignment Part 1: Solve for Object Location Given Initial and Final Joint Configurations.
+## Outline 
+{: .no_toc }
 
-### 1a) Forward Kinematics
+{: .toc }
+* TOC
+{:toc}
+
+## Assignment Part 1: Forward Kinematics
+
+### 1a) Write Forward Kinematics Helper Function
 This is the first time we will be implementing forward-kinematics for our SO-101 robot arms! To do this, write a helper script named `so101_forward_kinematics.py` that takes computes the tool frame position and orientation given a dictionary item of the robot configuration. To help you write this, I've provided a start to this script below that shows how to compute the first transformation in our product of Lie groups method:
 
 ```python
@@ -57,7 +66,7 @@ Your forward kinematics should be based on the diagram shown below. The informat
 ![SO-101 Forward Kinematics Diagrams]({{ site.baseurl }}/assets/assignment6/FK-info.png)
 
 {: .note} 
-The frame at the end was added so that we can easily compute the position and orientation of an object held by the gripper. This is the same as what we've been calling the _tool_ frame.
+Since we are interested in the position of objects within the moving jaw's grasp, we added an _object_ frame as shown on the diagram. This object frame is directly translated/rotated from joint 5. This means that in our forward kinematics mapping we will actually ignore joint 6 (since the moving jaw does not influence where the object would be located). This is the same procedure/methodology as what we've been doing with the _tool_ frame in class.
 
 When you complete all of the `get_gxx()` functions, you can obtain the entire forward kinematics as follows:
 
@@ -68,9 +77,8 @@ def get_forward_kinematics(d, position_dict):
     g23 = get_g23(position_dict['elbow_flex'])
     g34 = get_g34(position_dict['wrist_flex'])
     g45 = get_g45(position_dict['wrist_roll'])
-    g56 = get_g56(position_dict['gripper'])
-    g6t = get_g6t()
-    gwt = gw1 @ g12 @ g23 @ g34 @ g45 @ g56 @ g6t
+    g5t = get_g5t()
+    gwt = gw1 @ g12 @ g23 @ g34 @ g45 @ g5t
     position = gwt[0:3, 3]
     rotation = gwt[0:3, 0:3]
     return position, rotation
@@ -107,8 +115,8 @@ def show_cylinder(viewer, position, rotation, radius=0.0245, halfheight=0.05, rg
 
 test_configuration = {
     'shoulder_pan': -45.0,   # in radians for mujoco! 
-    'shoulder_lift': 30.0,
-    'elbow_flex': -30.00,
+    'shoulder_lift': 45.0,
+    'elbow_flex': -45.00,
     'wrist_flex': 90.0,
     'wrist_roll': 0.0,
     'gripper': 10          
@@ -133,21 +141,23 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
 ![Example Forward Kinematics]({{ site.baseurl }}/assets/assignment6/example-FK.png)
 
 ## Assignment Part 2: Write Pick and Place code
+
+### 2a) Test Pick and Place in MuJoCo
 We will first conduct the pick and place maneuver in simulation. This will require modifying the code above to have six different joint configurations, and transitioning between these joint configurations using our `hold_position` and `move_to_pose` functions from the last two assignments. The first and last configurations should be the following:
 
 ```python
 starting_configuration = {
     'shoulder_pan': -45.0,   # in radians for mujoco! 
-    'shoulder_lift': 30.0,
-    'elbow_flex': -30.00,
+    'shoulder_lift': 45.0,
+    'elbow_flex': -45.00,
     'wrist_flex': 90.0,
     'wrist_roll': 0.0,
     'gripper': 50
 }
 final_configuration = {
     'shoulder_pan': 45.0,   # in radians for mujoco! 
-    'shoulder_lift': 30.0,
-    'elbow_flex': -30.00,
+    'shoulder_lift': 45.0,
+    'elbow_flex': -45.00,
     'wrist_flex': 90.0,
     'wrist_roll': 0.0,
     'gripper': 50       
@@ -159,19 +169,19 @@ The second and second-to-last configurations should then be these same configura
 ```python
 starting_configuration_closed = {
     'shoulder_pan': -45.0,   # in radians for mujoco! 
-    'shoulder_lift': 30.0,
-    'elbow_flex': -30.00,
+    'shoulder_lift': 45.0,
+    'elbow_flex': -45.00,
     'wrist_flex': 90.0,
     'wrist_roll': 0.0,
-    'gripper': 10
+    'gripper': 5
 }
 final_configuration_closed = {
     'shoulder_pan': 45.0,   # in radians for mujoco! 
-    'shoulder_lift': 30.0,
-    'elbow_flex': -30.00,
+    'shoulder_lift': 45.0,
+    'elbow_flex': -45.00,
     'wrist_flex': 90.0,
     'wrist_roll': 0.0,
-    'gripper': 10    
+    'gripper': 5    
 }
 ```
 
@@ -187,12 +197,38 @@ Your final code should produce the video shown below:
   ></iframe>
 </div>
 
-Once you're comfortable with this process of moving from joint configuration to joint coniguration, try it out on the real robot! You should mostly be able to use your code from Assignment 3. The general procedure is the following.
-1. Place the objects in the position predicted by your forward kinematics
-2. Command the robot to this position to verify that it is accurate. 
-3. If the position is not accurate, you may need to recalibrate. If it is still not accurate, you can use the `read_position` script from Assignment 3 to find a more appropriate starting and final joint configuration. Note that this will require also modifying the in-between joint configurations. 
-4. Command the robot to move between the various joint configurations with a reasonable duration.
+### 2b) Execute Pick and Place on Hardware
+Once you're comfortable with this process of moving from joint configuration to joint coniguration, try it out on the real robot! You should mostly be able to use your code from Assignment 3 with the addition of a few more target joint configurations and `move_to_pose` calls. The general procedure is the following.
+1. Determine the object locations using our predictions from the forward kinematics mapping and place the objects in this position using our acrylic cartesian grids. 
+2. Start your code as in Lab 3 where we store the robot's actual starting position and move to the first desired joint configuration using:
+
+```python
+starting_pose = bus.sync_read("Present_Position")
+move_to_pose(bus, starting_configuration, 2.0)
+```
+
+At the end of your code, you should then transition back to the initial starting position using
+
+```python
+move_to_pose(bus, starting_pose, 2.0)
+```
+
+This will prevent the robot from slamming into the table when it terminates the script. 
+
+3. Execute the full sequence and verify that it visually matches what we see in simulation. In particular, does the first desired configuration align with our expected object location? In your writeup, comment on whether or not this prediction was accurate. 
+4. If the initial object location is not accurate, you may need to recalibrate. If it is still not accurate, you can use the `read_position` script from Assignment 3 to find a more appropriate starting and final joint configuration. Note that this will require also modifying the in-between joint configurations. 
 5. Show the TAs your robotic simulation and hardware. More details on the requirements for the assignment submission this week are provided below.
+
+Your final robotic demonstration should look like the following:
+
+<div class="video-container">
+  <iframe
+    src="https://www.youtube.com/embed/-TuqYhyUSVc"
+    frameborder="0"
+    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+  ></iframe>
+</div>
 
 {: .important} 
 Please put away all supplies and return the desk to a clean position when you are done with lab. Please also let us know if anything breaks so that we can maintain the robots.
