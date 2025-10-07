@@ -197,6 +197,37 @@ Your final code should produce the video shown below:
   ></iframe>
 </div>
 
+The following code was used to visualize the cubes in the simulation video:
+
+```python
+def show_cubes(viewer, starting_config, final_config, halfwidth=0.013):
+    # Use forward kinematics
+    starting_object_position, starting_object_orientation = get_forward_kinematics(starting_config)
+    final_object_position, final_object_orientation = get_forward_kinematics(final_config)
+  
+    # Add starting cube
+    mujoco.mjv_initGeom(
+        viewer.user_scn.geoms[0],
+        type=mujoco.mjtGeom.mjGEOM_BOX, 
+        size=[halfwidth, halfwidth, halfwidth],                 
+        pos=starting_object_position,                         
+        mat=starting_object_orientation.flatten(),              
+        rgba=[1, 0, 0, 0.2]                           
+    )
+    # Add final cube
+    mujoco.mjv_initGeom(
+        viewer.user_scn.geoms[1],
+        type=mujoco.mjtGeom.mjGEOM_BOX, 
+        size=[halfwidth, halfwidth, halfwidth],                 
+        pos=final_object_position,                         
+        mat=final_object_orientation.flatten(),              
+        rgba=[0, 1, 0, 0.2]                           
+    )
+    viewer.user_scn.ngeom = 2
+    viewer.sync()
+    return
+```
+
 ### 2b) Execute Pick and Place on Hardware
 Once you're comfortable with this process of moving from joint configuration to joint coniguration, try it out on the real robot! You should mostly be able to use your code from Assignment 3 with the addition of a few more target joint configurations and `move_to_pose` calls. The general procedure is the following.
 1. Determine the object locations using our predictions from the forward kinematics mapping and place the objects in this position using our acrylic cartesian grids. 
