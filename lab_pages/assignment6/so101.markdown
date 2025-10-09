@@ -62,7 +62,7 @@ def get_gw1(theta1_deg):
 
 Your forward kinematics should be based on the diagram shown below. The information shown on the diagram was obtained directly from the so-101 urdf used in Assignment 5. 
 
-![SO-101 Frames]({{ site.baseurl }}/assets/assignment6/mujoco-frames.png)
+<!-- ![SO-101 Frames]({{ site.baseurl }}/assets/assignment6/mujoco-frames.png) -->
 ![SO-101 Forward Kinematics Diagrams]({{ site.baseurl }}/assets/assignment6/FK-info.png)
 
 {: .note} 
@@ -71,7 +71,7 @@ Since we are interested in the position of objects within the moving jaw's grasp
 When you complete all of the `get_gxx()` functions, you can obtain the entire forward kinematics as follows:
 
 ```python 
-def get_forward_kinematics(d, position_dict):
+def get_forward_kinematics(position_dict):
     gw1 = get_gw1(position_dict['shoulder_pan'])
     g12 = get_g12(position_dict['shoulder_lift'])
     g23 = get_g23(position_dict['elbow_flex'])
