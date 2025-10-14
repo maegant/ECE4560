@@ -3,7 +3,7 @@ title: Week 9
 ---
 
 October 14
-: 13 - Inverse Kinematics 1
+: [13 - Inverse Kinematics 1](lecture13.pdf)
 
 October 16
 : 14 - Inverse Kinematics 2
