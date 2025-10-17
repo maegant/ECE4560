@@ -6,7 +6,7 @@ October 14
 : [13 - Inverse Kinematics 1](lecture13.pdf)
 
 October 16
-: 14 - Inverse Kinematics 2
+: [14 - Inverse Kinematics 2](lecture14.pdf)
 
 October 17
 : **HW1 6 due**{: .label .label-red }
