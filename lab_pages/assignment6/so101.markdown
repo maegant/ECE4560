@@ -10,7 +10,7 @@ parent: 6 - Pick and Place
 ## The SO-101 Robot Arms 
 {: .no_toc }
 
-For this module, we will be writing code to calculating the forward kinematics for our SO-101 robot arms and executing a simple "Pick and Place" maneuver from pre-determined joint angles. This approach is often used for manufacturing robots where the starting and ending configurations are known apriori. But once we learn inverse kinematics, we will repeat this module using only the desired starting and ending cartesian positions of our end-effector.
+For this module, we will be writing code to calculate the forward kinematics for our SO-101 robot arms and execute a simple "Pick and Place" maneuver from pre-determined joint angles. This approach is often used for manufacturing robots where the starting and ending configurations are known apriori. But once we learn inverse kinematics, we will repeat this module using only the desired starting and ending cartesian positions of our end-effector.
 
 ## Outline 
 {: .no_toc }
