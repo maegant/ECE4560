@@ -239,4 +239,4 @@ Your final video submission should look something like this:
 </div>
 
 ## Submission Details
-For the homework assignment, please show your simulation to one of the TAs during lab office hours. If this is not possible, you may also email a video to Prof. Tucker with the TAs cc-ed. For full credit, **each member of each group must submit their own simulation video**.
+Please show your simulation to one of the TAs during lab office hours. If this is not possible, you may also email a video to Prof. Tucker with the TAs cc-ed. **For full credit, each group member must also submit a writeup of how they completed the geometric inverse kinematics solution, including diagrams with labeled lengths and angles for $\theta_1$, $\theta_2$, and $\theta_3$.**
