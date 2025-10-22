@@ -13,7 +13,7 @@ let planar_example = function(p) {
   let slider1, slider2, slider3;
 
   let showFramesCheckbox;
-  let container = document.getElementById("fk-lie-demo-canvas");
+  let container = document.getElementById("fk-exponential-canvas");
   container.style.position = "relative";
 
   p.setup = function() {
@@ -22,14 +22,14 @@ let planar_example = function(p) {
     canvas.style('display', 'block'); // avoid inline spacing issues
 
     slider1 = p.createSlider(-180,180,0);
-    slider1.parent("fk-lie-demo-sliders");
+    slider1.parent("fk-exponential-sliders");
 
     slider2 = p.createSlider(-180,180,0);
-    slider2.parent("fk-lie-demo-sliders");
+    slider2.parent("fk-exponential-sliders");
 
     slider3 = p.createSlider(-180,180,0);
-    slider3.parent("fk-lie-demo-sliders");
-
+    slider3.parent("fk-exponential-sliders");
+    
     // New checkbox
     showFramesCheckbox = p.createCheckbox('Show frames', true); // default checked
     showFramesCheckbox.style('position', 'absolute');
@@ -57,27 +57,88 @@ let planar_example = function(p) {
     ];
   }
 
-  function computeFK_Lie(theta1, theta2, theta3) {
-    let R01 = RZ(theta1);
-    let d01 = [[0],[0],[0]];
+  function getExpMat(xi, theta) {
+    let xihat = hatTwist(xi);
+    let A = math.multiply(xihat, theta);
+    let expA = math.expm(A);
+    return expA.toArray();
+  }
 
-    let R12 = RZ(theta2);
-    let d12 = [[L1],[0],[0]];
+  function getTwist(omega, q) {
+    let omegaArr = omega.slice(0,3);
+    let negomegaArr = math.multiply(-1, omegaArr);
+    let qArr = q.slice(0,3);
+    let negOmegaCrossQ = math.cross(negomegaArr, qArr);      // -ω × q
+    return [ negOmegaCrossQ[0], negOmegaCrossQ[1], negOmegaCrossQ[2], omegaArr[0], omegaArr[1], omegaArr[2] ];
+  }
 
-    let R23 = RZ(theta3);
-    let d23 = [[L2],[0],[0]];
+  function hatTwist(xi) {
+    let v1 = xi[0];
+    let v2 = xi[1];
+    let v3 = xi[2];
+    let w1 = xi[3];
+    let w2 = xi[4];
+    let w3 = xi[5];
+    return [[0, -w3, w2, v1],
+            [w3, 0, -w1, v2],
+            [-w2, w1, 0, v3],
+            [0, 0, 0, 0]];
+  }
 
-    let R3E = [[1,0,0],[0,1,0],[0,0,1]];
-    let d3E = [[L3],[0],[0]];
+  function computeFK_Exp(theta1, theta2, theta3) {
+    let omega1 = [0, 0, 1];
+    let omega2 = [0, 0, 1];
+    let omega3 = [0, 0, 1];
+    let q1 = [0, 0, 0];
+    let q2 = [L1, 0, 0];
+    let q3 = [L1 + L2, 0, 0];
+    let g0 = [
+      [1, 0, 0, L1 + L2 + L3],
+      [0, 1, 0, 0],
+      [0, 0, 1, 0],
+      [0, 0, 0, 1]
+    ];
 
-    let g_w1 = getTransformationMatrix(R01,d01);
-    let g_12 = getTransformationMatrix(R12,d12);
-    let g_23 = getTransformationMatrix(R23,d23);
-    let g_3E = getTransformationMatrix(R3E,d3E);
+    // intermediate reference configurations for visualization purposes only
+    let g0_1 = [
+      [1, 0, 0, 0],
+      [0, 1, 0, 0],
+      [0, 0, 1, 0],
+      [0, 0, 0, 1]
+    ];
+    let g0_2 = [
+      [1, 0, 0, L1],
+      [0, 1, 0, 0],
+      [0, 0, 1, 0],
+      [0, 0, 0, 1]
+    ];
+    let g0_3 = [
+      [1, 0, 0, L1 + L2],
+      [0, 1, 0, 0],
+      [0, 0, 1, 0],
+      [0, 0, 0, 1]
+    ];
 
-    let g_w2 = math.multiply(g_w1,g_12);
-    let g_w3 = math.multiply(g_w2,g_23);
-    let g_wE = math.multiply(g_w3,g_3E);
+    let xi1 = getTwist(omega1, q1);
+    let xi2 = getTwist(omega2, q2);
+    let xi3 = getTwist(omega3, q3);
+
+    let exp1 = getExpMat(xi1, theta1);
+    let exp2 = getExpMat(xi2, theta2);
+    let exp3 = getExpMat(xi3, theta3);
+
+    let exp12 = math.multiply(exp1, exp2);
+    let exp123 = math.multiply(exp12, exp3);
+
+    let g_w1 = math.multiply(exp1, g0_1);
+    let g_w2 = math.multiply(math.multiply(exp1, exp2), g0_2);
+    let g_w3 = math.multiply(math.multiply(math.multiply(exp1, exp2), exp3), g0_3);
+    let g_wE = math.multiply(math.multiply(math.multiply(exp1, exp2), exp3), g0);
+
+    // "Unit" manipulators for each individual joint in the zero configuration
+    let g_indiv1 = math.multiply(exp1, g0);
+    let g_indiv2 = math.multiply(exp12, g0);
+    let g_indiv3 = math.multiply(exp123, g0);
 
     // Compute poses
     let p1 = compute_pose_from_transformation(g_w1);
@@ -87,11 +148,25 @@ let planar_example = function(p) {
 
     return {
       points: [p1, p2, p3, pE],
+      exponentials: {
+        exp1: exp1,
+        exp2: exp2,
+        exp3: exp3
+      },
       transforms: {
         g_w1: g_w1,
         g_w2: g_w2,
         g_w3: g_w3,
         g_wE: g_wE
+      },
+      twists: {
+        xi1: xi1,
+        xi2: xi2,
+        xi3: xi3
+      },
+      ghosts: {
+        origins: [exp1, exp12, exp123],
+        ends: [g_indiv1, g_indiv2, g_indiv3]
       }
     };
   }
@@ -160,12 +235,29 @@ let planar_example = function(p) {
     theta2 = p.radians(slider2.value());
     theta3 = p.radians(slider3.value());
 
-    let result = computeFK_Lie(theta1, theta2, theta3);
+    let result = computeFK_Exp(theta1, theta2, theta3);
     let points = result.points
-    let gw1 = result.transforms.g_w1;
-    let gw2 = result.transforms.g_w2;
-    let gw3 = result.transforms.g_w3;
-    let gwE = result.transforms.g_wE;
+    let twists = result.twists;
+    let exps = result.exponentials;
+    let transforms = result.transforms;
+
+    // Draw Ghost Manipulators (so on the bottom)
+    let ghosts = result.ghosts;
+    p.stroke("rgba(255,0,0,0.5)");
+    p.strokeWeight(2);
+    let origin1 = compute_pose_from_transformation(ghosts.origins[0]);
+    let end1 = compute_pose_from_transformation(ghosts.ends[0]);
+    p.line(origin1.x, origin1.y, end1.x, end1.y);
+
+    p.stroke("rgba(128,0,128,0.5)"); // purple, 50% transparent
+    let origin2 = compute_pose_from_transformation(ghosts.origins[1]);
+    let end2 = compute_pose_from_transformation(ghosts.ends[1]);
+    p.line(origin2.x, origin2.y, end2.x, end2.y);
+
+    p.stroke("rgba(255,165,0,0.5)"); // orange, 50% transparent
+    let origin3 = compute_pose_from_transformation(ghosts.origins[2]);
+    let end3 = compute_pose_from_transformation(ghosts.ends[2]);
+    p.line(origin3.x, origin3.y, end3.x, end3.y);
 
     // Draw links
     p.push()
@@ -174,6 +266,7 @@ let planar_example = function(p) {
     p.line(points[0].x, points[0].y, points[1].x, points[1].y);
     p.line(points[1].x, points[1].y, points[2].x, points[2].y);
     p.line(points[2].x, points[2].y, points[3].x, points[3].y);
+
     // Draw gripper
     p.line(points[3].x, points[3].y, points[3].x + clawLength * Math.cos(points[3].theta + clawAngle), points[3].y + clawLength * Math.sin(points[3].theta + clawAngle));
     p.line(points[3].x, points[3].y, points[3].x + clawLength * Math.cos(points[3].theta -clawAngle), points[3].y + clawLength * Math.sin(points[3].theta -clawAngle));
@@ -185,15 +278,21 @@ let planar_example = function(p) {
       drawFrame(p, gworld);
 
       // Draw frames for the actual robot
-      drawFrame(p, gw1);
-      drawFrame(p, gw2);
-      drawFrame(p, gw3);
-      drawFrame(p, gwE);
+      drawFrame(p, ghosts.origins[0]);
+      drawFrame(p, ghosts.origins[1]);
+      drawFrame(p, ghosts.origins[2]);
 
+      // Draw frames for ghost manipulators
+      drawFrame(p, transforms.g_w1);
+      drawFrame(p, transforms.g_w2);
+      drawFrame(p, transforms.g_w3);
+      drawFrame(p, transforms.g_wE);
     }
 
     // Draw joints
     p.fill("blue");
+    p.stroke("blue");
+    p.noStroke();
     for (let i = 0; i < points.length - 1; i++) {
       let pt = points[i];
       p.ellipse(pt.x, pt.y, 12, 12);
@@ -211,14 +310,13 @@ let planar_example = function(p) {
     // Convert end-effector position to canvas coordinates
     let canvasX = p.width / 2 + endEffector.x;
     let canvasY = p.height / 2 - endEffector.y; // flip y back for DOM
-
     let thetaDeg = (endEffector.theta * 180 / Math.PI).toFixed(1);
     let label = `\\((x, y, \\theta) = (${endEffector.x.toFixed(1)},\\ ${endEffector.y.toFixed(1)},\\ ${thetaDeg}^\\circ)\\)`;
 
     if (window.eeLabel) window.eeLabel.remove();
-    let container = document.getElementById('fk-lie-demo-container');
+    let container = document.getElementById('fk-exponential-container');
     let div = document.createElement('div');
-    div.style.position = 'relative';
+    div.style.position = 'absolute';
     div.style.left = `${canvasX + 10}px`;
     div.style.top = `${canvasY - 30}px`;
     div.style.background = 'rgba(255,255,255,0.8)';
@@ -242,7 +340,7 @@ let planar_example = function(p) {
     window.thetaLabels = [];
 
     function createMathJaxLabel(latex, x, y) {
-      let container = document.getElementById('fk-lie-demo-container');
+      let container = document.getElementById('fk-exponential-container');
       let div = document.createElement('div');
       div.style.position = 'absolute';
       div.style.left = `${x}px`; // relative to container
@@ -267,6 +365,38 @@ let planar_example = function(p) {
     createMathJaxLabel(`\\(\\theta_1 = ${slider1.value()}^\\circ\\)`, 12, 18);
     createMathJaxLabel(`\\(\\theta_2 = ${slider2.value()}^\\circ\\)`, 12, 42);
     createMathJaxLabel(`\\(\\theta_3 = ${slider3.value()}^\\circ\\)`, 12, 66);
+
+    function showTwistLabel(twist, label, containerId, left, top, windowLabelName) {
+      // Remove previous label if exists
+      if (window[windowLabelName]) window[windowLabelName].remove();
+
+      let container = document.getElementById(containerId);
+      let div = document.createElement('div');
+      div.style.position = 'relative';
+      div.style.left = left;
+      div.style.top = top;
+      div.style.background = 'rgba(255,255,255,0.8)';
+      div.style.fontSize = '14px';
+      div.style.pointerEvents = 'none';
+      div.className = 'latex-label';
+      container.appendChild(div);
+      window[windowLabelName] = div;
+
+      // Ensure twist is a flat array
+      let values = Array.isArray(twist) ? twist.flat() : [];
+      
+      // Build LaTeX string for a 6x1 column vector
+      let latex = `\\(${label} = \\begin{bmatrix}` +
+                  values.map(n => n.toFixed(3)).join('\\\\') +
+                  '\\end{bmatrix}\\)';
+
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        div.innerHTML = latex;
+        MathJax.typesetPromise([div]);
+      } else {
+        div.textContent = latex;
+      }
+    }
 
     function showMatrixLabel(matrix, label, containerId, left, top, windowLabelName) {
       // Remove previous label if exists
@@ -296,12 +426,16 @@ let planar_example = function(p) {
       div.textContent = latex;
       }
     }
+    
 
     // Example usage for gw1:
-    showMatrixLabel(gw1, 'g_{w1}', 'fk-lie-demo-output', '12px', '0px', 'g01Label');
-    showMatrixLabel(gw2, 'g_{w2}', 'fk-lie-demo-output', '12px', '0px', 'gw2Label');
-    showMatrixLabel(gw3, 'g_{w3}', 'fk-lie-demo-output', '12px', '0px', 'gw3Label');
-    showMatrixLabel(gwE, 'g_{wE}', 'fk-lie-demo-output', '12px', '0px', 'gwELabel');
+    // showTwistLabel(twists.xi1, '\\xi_1', 'fk-exponential-output', '12px', '0px', 'xi1Label');
+    // showTwistLabel(twists.xi2, '\\xi_2', 'fk-exponential-output', '12px', '0px', 'xi2Label');
+    // showTwistLabel(twists.xi3, '\\xi_3', 'fk-exponential-output', '12px', '0px', 'xi3Label');
+
+    showMatrixLabel(exps.exp1, 'e^{\\xi_1 \\theta_1}', 'fk-exponential-output', '12px', '0px', 'xi1Label');
+    showMatrixLabel(exps.exp2, 'e^{\\xi_2 \\theta_2}', 'fk-exponential-output', '12px', '0px', 'fk-exponential-output2');
+    showMatrixLabel(exps.exp3, 'e^{\\xi_3 \\theta_3}', 'fk-exponential-output', '12px', '0px', 'fk-exponential-output3');
   }
 }
 

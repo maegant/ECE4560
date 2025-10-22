@@ -105,6 +105,24 @@ let planar_example = function(p) {
     let gw3 = result.transforms.g_w3;
     let gwE = result.transforms.g_wE;
 
+    // Draw grid
+    p.stroke(200);
+    p.strokeWeight(1);
+    let gridSpacing = 40;
+    let xMin = -p.width / 2;
+    let xMax = p.width / 2;
+    let yMin = -p.height / 2;
+    let yMax = p.height / 2;
+    // Vertical lines
+    for (let x = Math.ceil(xMin / gridSpacing) * gridSpacing; x <= xMax; x += gridSpacing) {
+      p.line(x, yMin, x, yMax);
+    }
+    // Horizontal lines
+    for (let y = Math.ceil(yMin / gridSpacing) * gridSpacing; y <= yMax; y += gridSpacing) {
+      p.line(xMin, y, xMax, y);
+    }
+    p.pop();
+    
     // Draw links
     p.stroke(0);
     p.strokeWeight(4);
