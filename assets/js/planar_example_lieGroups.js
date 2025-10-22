@@ -194,6 +194,7 @@ let planar_example = function(p) {
 
     // Draw joints
     p.fill("blue");
+    p.stroke("blue");
     for (let i = 0; i < points.length - 1; i++) {
       let pt = points[i];
       p.ellipse(pt.x, pt.y, 12, 12);
