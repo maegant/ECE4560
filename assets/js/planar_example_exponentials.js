@@ -13,6 +13,7 @@ let planar_example = function(p) {
   let slider1, slider2, slider3;
 
   let showFramesCheckbox;
+  let showLabelsCheckbox;
   let container = document.getElementById("fk-exponential-canvas");
   container.style.position = "relative";
 
@@ -20,15 +21,46 @@ let planar_example = function(p) {
     let canvas = p.createCanvas(500,400);
     canvas.parent(container);
     canvas.style('display', 'block'); // avoid inline spacing issues
+    
+    const sliderContainer = document.getElementById("fk-exponential-sliders");
+    sliderContainer.style.display = "flex";
+    sliderContainer.style.flexDirection = "column";
+    sliderContainer.style.alignItems = "center";
+    sliderContainer.style.gap = "8px";
 
-    slider1 = p.createSlider(-180,180,0);
-    slider1.parent("fk-exponential-sliders");
+    function addSliderWithLabel(labelText, defaultValue=0) {
+    let wrapper = document.createElement("div");
+    wrapper.style.display = "flex";
+    wrapper.style.flexDirection = "column";
+    wrapper.style.alignItems = "center";
+    wrapper.style.marginBottom = "4px";
 
-    slider2 = p.createSlider(-180,180,0);
-    slider2.parent("fk-exponential-sliders");
+    // Create slider
+    let slider = p.createSlider(-180, 180, defaultValue);
+      slider.parent(wrapper);
 
-    slider3 = p.createSlider(-180,180,0);
-    slider3.parent("fk-exponential-sliders");
+      // Create label
+      let label = document.createElement("div");
+      label.innerHTML = `\\(${labelText}\\)`;
+      label.style.fontSize = "14px";
+      label.style.marginTop = "2px";
+      wrapper.appendChild(label);
+
+      // Append to container
+      sliderContainer.appendChild(wrapper);
+
+      // Render with MathJax
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([label]);
+      }
+
+      return slider;
+    }
+
+    // Create sliders + labels
+    slider1 = addSliderWithLabel("\\theta_1");
+    slider2 = addSliderWithLabel("\\theta_2");
+    slider3 = addSliderWithLabel("\\theta_3");
     
     // New checkbox
     showFramesCheckbox = p.createCheckbox('Show frames', true); // default checked
@@ -38,6 +70,15 @@ let planar_example = function(p) {
     showFramesCheckbox.style('background', 'rgba(255,255,255,0.8)');
     showFramesCheckbox.style('padding', '4px');
     showFramesCheckbox.parent(container);
+
+    // New checkbox for "Show labels"
+    showLabelsCheckbox = p.createCheckbox('Show labels', true); // default checked
+    showLabelsCheckbox.style('position', 'absolute');
+    showLabelsCheckbox.style('top', '50px');
+    showLabelsCheckbox.style('right', '18px');
+    showLabelsCheckbox.style('background', 'rgba(255,255,255,0.8)');
+    showLabelsCheckbox.style('padding', '4px');
+    showLabelsCheckbox.parent(container);
   }
 
   let RZ = function(theta) {
@@ -209,7 +250,7 @@ let planar_example = function(p) {
   p.draw = function() {
     p.background(240);
     p.translate(p.width/2, p.height/2);
-    p.scale(1, -1); // Flip y-axis for conventional coordinate system
+    p.scale(0.8, -0.8); // Flip y-axis for conventional coordinate system
 
     // Draw grid
     p.stroke(200);
@@ -313,26 +354,6 @@ let planar_example = function(p) {
     let thetaDeg = (endEffector.theta * 180 / Math.PI).toFixed(1);
     let label = `\\((x, y, \\theta) = (${endEffector.x.toFixed(1)},\\ ${endEffector.y.toFixed(1)},\\ ${thetaDeg}^\\circ)\\)`;
 
-    if (window.eeLabel) window.eeLabel.remove();
-    let container = document.getElementById('fk-exponential-container');
-    let div = document.createElement('div');
-    div.style.position = 'absolute';
-    div.style.left = `${canvasX + 10}px`;
-    div.style.top = `${canvasY - 30}px`;
-    div.style.background = 'rgba(255,255,255,0.8)';
-    div.style.fontSize = '16px';
-    div.style.pointerEvents = 'none';
-    div.className = 'latex-label';
-    container.appendChild(div);
-    window.eeLabel = div;
-
-    // if (window.MathJax && window.MathJax.typesetPromise) {
-    //   div.innerHTML = label;
-    //   MathJax.typesetPromise([div]);
-    // } else {
-    //   div.textContent = label;
-    // }
-
     // Remove previous labels if they exist
     if (window.thetaLabels) {
       window.thetaLabels.forEach(el => el.remove());
@@ -361,10 +382,21 @@ let planar_example = function(p) {
       }
     }
 
+    function plotLabelonCanvas(label, point) {
+      createMathJaxLabel(`\\(${label}\\)`, p.width / 2 + point.x, p.height / 2 - point.y); // flip y back for DOM
+    }
+
     // Place the labels near the top-left corner of the canvas itself
     createMathJaxLabel(`\\(\\theta_1 = ${slider1.value()}^\\circ\\)`, 12, 18);
     createMathJaxLabel(`\\(\\theta_2 = ${slider2.value()}^\\circ\\)`, 12, 42);
     createMathJaxLabel(`\\(\\theta_3 = ${slider3.value()}^\\circ\\)`, 12, 66);
+
+    if (showLabelsCheckbox.checked()) {
+      // Place the labels near the top-left corner of the canvas itself
+      plotLabelonCanvas('e^{\\hat{\\xi}_1 \\theta_1}', origin1);
+      plotLabelonCanvas('e^{\\hat{\\xi}_1 \\theta_1}e^{\\hat{\\xi}_2 \\theta_2}', origin2);
+      plotLabelonCanvas('e^{\\hat{\\xi}_1 \\theta_1}e^{\\hat{\\xi}_2 \\theta_2}e^{\\hat{\\xi}_3 \\theta_3}', origin3);
+    }
 
     function showTwistLabel(twist, label, containerId, left, top, windowLabelName) {
       // Remove previous label if exists
@@ -433,9 +465,10 @@ let planar_example = function(p) {
     // showTwistLabel(twists.xi2, '\\xi_2', 'fk-exponential-output', '12px', '0px', 'xi2Label');
     // showTwistLabel(twists.xi3, '\\xi_3', 'fk-exponential-output', '12px', '0px', 'xi3Label');
 
-    showMatrixLabel(exps.exp1, 'e^{\\xi_1 \\theta_1}', 'fk-exponential-output', '12px', '0px', 'xi1Label');
-    showMatrixLabel(exps.exp2, 'e^{\\xi_2 \\theta_2}', 'fk-exponential-output', '12px', '0px', 'fk-exponential-output2');
-    showMatrixLabel(exps.exp3, 'e^{\\xi_3 \\theta_3}', 'fk-exponential-output', '12px', '0px', 'fk-exponential-output3');
+    showMatrixLabel(exps.exp1, 'e^{\\hat{\\xi}_1 \\theta_1}', 'fk-exponential-output', '12px', '0px', 'xi1Label');
+    showMatrixLabel(exps.exp2, 'e^{\\hat{\\xi}_2 \\theta_2}', 'fk-exponential-output', '12px', '0px', 'fk-exponential-output2');
+    showMatrixLabel(exps.exp3, 'e^{\\hat{\\xi}_3 \\theta_3}', 'fk-exponential-output', '12px', '0px', 'fk-exponential-output3');
+    showMatrixLabel(transforms.g_wE, 'e^{\\hat{\\xi}_1 \\theta_1}e^{\\hat{\\xi}_2 \\theta_2}e^{\\hat{\\xi}_3 \\theta_3}g_0', 'fk-exponential-output', '12px', '0px', 'fk-exponential-output4');
   }
 }
 

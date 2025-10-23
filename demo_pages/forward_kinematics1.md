@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Forward Kinematics 1
+title: Product of Lie Groups
 permalink: /fk-demo1/
 parent: Interactive Example
 nav_order: 2

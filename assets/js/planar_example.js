@@ -13,18 +13,59 @@ let planar_example = function(p) {
   let slider1, slider2, slider3;
 
 
+  p.windowResized = function() {
+    let container = document.getElementById("fk-lie-demo-canvas");
+    let containerWidth = container.offsetWidth;
+    p.resizeCanvas(containerWidth, 400);
+  };
+
   p.setup = function() {
-    let canvas = p.createCanvas(500,400);
-    canvas.parent("fk-lie-demo-canvas");
+    let container = document.getElementById("fk-lie-demo-canvas");
+    let containerWidth = container.offsetWidth;  // actual width of your Jekyll content div
+    let canvas = p.createCanvas(containerWidth, 400);
+    canvas.parent(container);
+    p.pixelDensity(1);
 
-    slider1 = p.createSlider(-180,180,0);
-    slider1.parent("fk-lie-demo-sliders");
+    const sliderContainer = document.getElementById("fk-lie-demo-sliders");
+    sliderContainer.style.display = "flex";
+    sliderContainer.style.flexDirection = "column";
+    sliderContainer.style.alignItems = "center";
+    sliderContainer.style.gap = "8px";
 
-    slider2 = p.createSlider(-180,180,0);
-    slider2.parent("fk-lie-demo-sliders");
+    function addSliderWithLabel(labelText, defaultValue=0) {
+    let wrapper = document.createElement("div");
+    wrapper.style.display = "flex";
+    wrapper.style.flexDirection = "column";
+    wrapper.style.alignItems = "center";
+    wrapper.style.marginBottom = "4px";
 
-    slider3 = p.createSlider(-180,180,0);
-    slider3.parent("fk-lie-demo-sliders");
+    // Create slider
+    let slider = p.createSlider(-180, 180, defaultValue);
+      slider.parent(wrapper);
+
+      // Create label
+      let label = document.createElement("div");
+      label.innerHTML = `\\(${labelText}\\)`;
+      label.style.fontSize = "14px";
+      label.style.marginTop = "2px";
+      wrapper.appendChild(label);
+
+      // Append to container
+      sliderContainer.appendChild(wrapper);
+
+      // Render with MathJax
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([label]);
+      }
+
+      return slider;
+    }
+
+    // Create sliders + labels
+    slider1 = addSliderWithLabel("\\theta_1");
+    slider2 = addSliderWithLabel("\\theta_2");
+    slider3 = addSliderWithLabel("\\theta_3");
+
   }
 
   let RZ = function(theta) {

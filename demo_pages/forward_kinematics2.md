@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Forward Kinematics 2
+title: Product of Exponentials
 permalink: /fk-demo2/
 parent: Interactive Example
 nav_order: 3
@@ -26,7 +26,7 @@ $$
 \xi = \begin{bmatrix} v \\ \omega \end{bmatrix}
 $$ with $$v$$ representing the linear velocity component and $$\omega$$ representing the angular velocity component of the twist.
 
-For our planar example, the reference configuration is:
+For our [planar example]({{ site.baseurl}}/planar-manipulator/), the reference configuration is:
 
 $$ 
 g_0 = \begin{bmatrix} I & \begin{bmatrix} L_1 + L_2 + L_3 \\ 0 \\ 0 \end{bmatrix} \\ 0 & 1 \end{bmatrix}

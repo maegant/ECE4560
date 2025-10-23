@@ -10,7 +10,7 @@ usemathjax: true
 # Planar Manipulator
 
 For all of the demos, we will consider the following planar 3-DOF manipulator:
-<div id="fk-lie-demo-container" style="position: relative; width: 500px; height: 400px; margin-right: 24px;">
+<div id="fk-lie-demo-container" style="position: relative; width: 100%; max-width: 100%; height: 400px; margin-right: 0;">
     <div id="fk-lie-demo-canvas"></div>
     <div id="fk-lie-demo-sliders"></div>
 </div>
