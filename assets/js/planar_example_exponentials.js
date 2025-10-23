@@ -24,19 +24,20 @@ let planar_example = function(p) {
     
     const sliderContainer = document.getElementById("fk-exponential-sliders");
     sliderContainer.style.display = "flex";
-    sliderContainer.style.flexDirection = "column";
+    sliderContainer.style.flexDirection = "row";
     sliderContainer.style.alignItems = "center";
+    sliderContainer.style.justifyContent = "center"; 
     sliderContainer.style.gap = "8px";
 
     function addSliderWithLabel(labelText, defaultValue=0) {
-    let wrapper = document.createElement("div");
-    wrapper.style.display = "flex";
-    wrapper.style.flexDirection = "column";
-    wrapper.style.alignItems = "center";
-    wrapper.style.marginBottom = "4px";
+      let wrapper = document.createElement("div");
+      wrapper.style.display = "flex";
+      wrapper.style.flexDirection = "column";
+      wrapper.style.alignItems = "center";
+      wrapper.style.marginBottom = "4px";
 
-    // Create slider
-    let slider = p.createSlider(-180, 180, defaultValue);
+      // Create slider
+      let slider = p.createSlider(-180, 180, defaultValue);
       slider.parent(wrapper);
 
       // Create label
@@ -345,14 +346,6 @@ let planar_example = function(p) {
     p.noStroke();
     p.fill(0);
     p.textSize(14);
-
-    // Put coordinates at end-effector frame
-    let endEffector = points[3];
-    // Convert end-effector position to canvas coordinates
-    let canvasX = p.width / 2 + endEffector.x;
-    let canvasY = p.height / 2 - endEffector.y; // flip y back for DOM
-    let thetaDeg = (endEffector.theta * 180 / Math.PI).toFixed(1);
-    let label = `\\((x, y, \\theta) = (${endEffector.x.toFixed(1)},\\ ${endEffector.y.toFixed(1)},\\ ${thetaDeg}^\\circ)\\)`;
 
     // Remove previous labels if they exist
     if (window.thetaLabels) {

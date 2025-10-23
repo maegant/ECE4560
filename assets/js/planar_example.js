@@ -28,8 +28,9 @@ let planar_example = function(p) {
 
     const sliderContainer = document.getElementById("fk-lie-demo-sliders");
     sliderContainer.style.display = "flex";
-    sliderContainer.style.flexDirection = "column";
+    sliderContainer.style.flexDirection = "row";
     sliderContainer.style.alignItems = "center";
+    sliderContainer.style.justifyContent = "center"; 
     sliderContainer.style.gap = "8px";
 
     function addSliderWithLabel(labelText, defaultValue=0) {

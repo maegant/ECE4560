@@ -13,6 +13,7 @@ let planar_example = function(p) {
   let slider1, slider2, slider3;
 
   let showFramesCheckbox;
+  let showLabelsCheckbox;
   let container = document.getElementById("fk-lie-demo-canvas");
   container.style.position = "relative";
 
@@ -23,8 +24,9 @@ let planar_example = function(p) {
 
     const sliderContainer = document.getElementById("fk-lie-demo-sliders");
     sliderContainer.style.display = "flex";
-    sliderContainer.style.flexDirection = "column";
+    sliderContainer.style.flexDirection = "row";
     sliderContainer.style.alignItems = "center";
+    sliderContainer.style.justifyContent = "center"; 
     sliderContainer.style.gap = "8px";
 
     function addSliderWithLabel(labelText, defaultValue=0) {
@@ -69,6 +71,15 @@ let planar_example = function(p) {
     showFramesCheckbox.style('background', 'rgba(255,255,255,0.8)');
     showFramesCheckbox.style('padding', '4px');
     showFramesCheckbox.parent(container);
+
+    // New checkbox for "Show labels"
+    showLabelsCheckbox = p.createCheckbox('Show labels', true); // default checked
+    showLabelsCheckbox.style('position', 'absolute');
+    showLabelsCheckbox.style('top', '50px');
+    showLabelsCheckbox.style('right', '18px');
+    showLabelsCheckbox.style('background', 'rgba(255,255,255,0.8)');
+    showLabelsCheckbox.style('padding', '4px');
+    showLabelsCheckbox.parent(container);
   }
 
   let RZ = function(theta) {
@@ -117,7 +128,12 @@ let planar_example = function(p) {
     let pE = compute_pose_from_transformation(g_wE);
 
     return {
-      points: [p1, p2, p3, pE],
+      points: {
+        p1: p1, 
+        p2: p2, 
+        p3: p3, 
+        pE: pE
+      },
       transforms: {
         g_w1: g_w1,
         g_w2: g_w2,
@@ -202,12 +218,12 @@ let planar_example = function(p) {
     p.push()
     p.stroke(0);
     p.strokeWeight(4);
-    p.line(points[0].x, points[0].y, points[1].x, points[1].y);
-    p.line(points[1].x, points[1].y, points[2].x, points[2].y);
-    p.line(points[2].x, points[2].y, points[3].x, points[3].y);
+    p.line(points.p1.x, points.p1.y, points.p2.x, points.p2.y);
+    p.line(points.p2.x, points.p2.y, points.p3.x, points.p3.y);
+    p.line(points.p3.x, points.p3.y, points.pE.x, points.pE.y);
     // Draw gripper
-    p.line(points[3].x, points[3].y, points[3].x + clawLength * Math.cos(points[3].theta + clawAngle), points[3].y + clawLength * Math.sin(points[3].theta + clawAngle));
-    p.line(points[3].x, points[3].y, points[3].x + clawLength * Math.cos(points[3].theta -clawAngle), points[3].y + clawLength * Math.sin(points[3].theta -clawAngle));
+    p.line(points.pE.x, points.pE.y, points.pE.x + clawLength * Math.cos(points.pE.theta + clawAngle), points.pE.y + clawLength * Math.sin(points.pE.theta + clawAngle));
+    p.line(points.pE.x, points.pE.y, points.pE.x + clawLength * Math.cos(points.pE.theta -clawAngle), points.pE.y + clawLength * Math.sin(points.pE.theta -clawAngle));
     p.pop();
 
     if (showFramesCheckbox.checked()) {
@@ -238,40 +254,16 @@ let planar_example = function(p) {
     p.fill(0);
     p.textSize(14);
 
-    // Put coordinates at end-effector frame
-    let endEffector = points[3];
-    // Convert end-effector position to canvas coordinates
-    let canvasX = p.width / 2 + endEffector.x;
-    let canvasY = p.height / 2 - endEffector.y; // flip y back for DOM
-
-    let thetaDeg = (endEffector.theta * 180 / Math.PI).toFixed(1);
-    let label = `\\((x, y, \\theta) = (${endEffector.x.toFixed(1)},\\ ${endEffector.y.toFixed(1)},\\ ${thetaDeg}^\\circ)\\)`;
-
-    if (window.eeLabel) window.eeLabel.remove();
-    let container = document.getElementById('fk-lie-demo-container');
-    let div = document.createElement('div');
-    div.style.position = 'relative';
-    div.style.left = `${canvasX + 10}px`;
-    div.style.top = `${canvasY - 30}px`;
-    div.style.background = 'rgba(255,255,255,0.8)';
-    div.style.fontSize = '16px';
-    div.style.pointerEvents = 'none';
-    div.className = 'latex-label';
-    container.appendChild(div);
-    window.eeLabel = div;
-
-    // if (window.MathJax && window.MathJax.typesetPromise) {
-    //   div.innerHTML = label;
-    //   MathJax.typesetPromise([div]);
-    // } else {
-    //   div.textContent = label;
-    // }
-
     // Remove previous labels if they exist
     if (window.thetaLabels) {
       window.thetaLabels.forEach(el => el.remove());
     }
     window.thetaLabels = [];
+
+
+    function plotLabelonCanvas(label, point) {
+      createMathJaxLabel(`\\(${label}\\)`, p.width / 2 + point.x, p.height / 2 - point.y); // flip y back for DOM
+    }
 
     function createMathJaxLabel(latex, x, y) {
       let container = document.getElementById('fk-lie-demo-container');
@@ -299,6 +291,14 @@ let planar_example = function(p) {
     createMathJaxLabel(`\\(\\theta_1 = ${slider1.value()}^\\circ\\)`, 12, 18);
     createMathJaxLabel(`\\(\\theta_2 = ${slider2.value()}^\\circ\\)`, 12, 42);
     createMathJaxLabel(`\\(\\theta_3 = ${slider3.value()}^\\circ\\)`, 12, 66);
+
+    if (showLabelsCheckbox.checked()) {
+      // Place the labels near the top-left corner of the canvas itself
+      plotLabelonCanvas('g_{w1}', points.p1);
+      plotLabelonCanvas('g_{w2}', points.p2);
+      plotLabelonCanvas('g_{w3}', points.p3);
+      plotLabelonCanvas('g_{wE}', points.pE);
+    }
 
     function showMatrixLabel(matrix, label, containerId, left, top, windowLabelName) {
       // Remove previous label if exists
