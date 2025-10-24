@@ -1,0 +1,98 @@
+---
+layout: page
+title: SO-101 Robot Arm
+permalink: /assignment8-so101/
+parent: 8 - Inverse Kinematics 2
+usemathjax: true
+---
+
+## The SO-101 Robot Arms 
+{: .no_toc }
+
+For this module, you will be implementing the inverse kinematics algorithm from Lab 7 on hardware. The goal is to pick up two separate blocks and stack them on top of eachother.
+
+## Outline 
+{: .no_toc }
+
+{: .toc }
+* TOC
+{:toc}
+
+## Assignment Part 1: Pick and Place for One Block
+
+First, to test your inverse kinematics implementation, you will pick up a single block and place it in a new location. To do this, I recommend making two helper functions `pick_up_block` and `place_block`, which will break down the "pick up" and "place" tasks into smaller steps. Below is an example implementation of the `pick_up_block` function.
+
+```python
+
+def pick_up_block(bus, block_position, move_to_duration):
+    
+    # Move above block with gripper open
+    block_raised = block_position.copy()
+    block_raised[2] += 0.03  # raise block height amount
+    block_configuration_raised = get_inverse_kinematics(block_raised)
+    block_configuration_raised['gripper'] = 50
+    move_to_pose(bus, move_to_duration)
+    
+    # Move down to block with gripper open
+    block_configuration = get_inverse_kinematics(block_position)
+    block_configuration['gripper'] = 50
+    move_to_pose(bus, block_configuration, 1.0)
+    
+    # Close gripper
+    block_configuration_closed = block_configuration.copy()
+    block_configuration_closed['gripper'] = 5
+    move_to_pose(bus, block_configuration_closed, 1.0)
+
+    # Lift up again
+    block_configuration_raised['gripper'] = 5
+    move_to_pose(bus, block_configuration_raised, 1.0)
+
+    return bus
+```
+
+```python
+
+def place_block(bus, target_position, move_to_duration):
+    
+    # Move above target with gripper closed
+    block_raised = target_position.copy()
+    block_raised[2] += 0.03  # raise 1 inch
+    block_configuration_raised = get_inverse_kinematics(block_raised)
+    block_configuration_raised['gripper'] = 5
+    move_to_pose(bus, block_configuration_raised, move_to_duration)
+    
+    # Move down to block
+    block_configuration = get_inverse_kinematics(target_position)
+    block_configuration['gripper'] = 5
+    move_to_pose(bus, block_configuration, 1.0)
+    
+    # Open gripper 
+    block_configuration_open = block_configuration.copy()
+    block_configuration_open['gripper'] = 50
+    move_to_pose(bus, block_configuration_open, 1.0)
+    
+    # Return to raised position
+    block_configuration_raised['gripper'] = 50
+    move_to_pose(bus, block_configuration_raised, 1.0)
+
+    return bus
+```     
+
+Use these helper functions along with your inverse kinematics implementation to pick up a single block from its starting position and place it in a new target position. Note that now your code should only need to be initialized with the desired block position and target position, and the rest of the motion should be handled by your helper functions.
+
+## Assignment Part 2: Pick and Place to Stack Two Blocks
+
+Use the `pick_up_block` and `place_block` functions you created in Part 1 to pick up two blocks (initialized in different locations) and stack them on top of eachother. You will need to adjust the target position for the second block to be one block height above the first block's target position.
+
+Your final video submission should look something like this:
+<div class="video-container">
+  <iframe
+    src="https://youtu.be/wexwQoDvZR8"
+    frameborder="0"
+    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+  ></iframe>
+</div>
+
+## Submission Details
+Please show your simulation to one of the TAs during lab office hours. The TAs will test your implementation by giving you random initial block locations and a random final target location (all within the workspace). If this is not possible, please include in your video submission yourself entering various target block locations to show that the inverse kinematics is working accurately. **For full credit, each group member must also submit a writeup of the lab this week, how they implemented the code, and any issues encountered. The writeup should be a minimum of one paragraph.**
