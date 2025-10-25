@@ -87,7 +87,7 @@ Use the `pick_up_block` and `place_block` functions you created in Part 1 to pic
 Your final video submission should look something like this:
 <div class="video-container">
   <iframe
-    src="https://youtu.be/wexwQoDvZR8"
+    src="https://www.youtube.com/embed/wexwQoDvZR8?si=BBUt_VHKOVMRIg3A"
     frameborder="0"
     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
     allowfullscreen
