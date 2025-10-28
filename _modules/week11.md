@@ -3,7 +3,7 @@ title: Week 11
 ---
 
 October 28
-: 17 - Jacobians and Singularity Analysis
+: [17 - Jacobians and Singularity Analysis](lecture17.pdf)
 
 October 30
 : 18 - Trajectory Design 1
