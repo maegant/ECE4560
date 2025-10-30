@@ -335,7 +335,7 @@ If you want an extra challenge, try stacking three blocks instead of two! You wi
 Proof that it's possible:
 <div class="video-container">
   <iframe
-    src="https://www.youtube.com/embed/wexwQoDvZR8?si=BBUt_VHKOVMRIg3A"
+    src="https://www.youtube.com/embed/2RLV-14ctZQ?si=IhLYs_ga3pkMX3GB"
     frameborder="0"
     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
     allowfullscreen
