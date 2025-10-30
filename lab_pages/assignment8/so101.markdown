@@ -356,10 +356,10 @@ Proof that it's possible:
 
 
 ## Suggested Improvements 
-There are a few things that we can do to improve the tracking performance during our pick-and-place maneuver. They are each listed below.
+There are a few things that we can do to improve the tracking performance during our pick-and-place maneuver.
 
 ### Adding Starting Configuration to `move_to_pose`
-The first suggestion is to modify the `move_to_pose` helper function to take in a desired starting location rather than taking the readings from the encoders as the starting location. This will reduce the discontinuity that occurs from the steady-state error.
+One suggestion is to modify the `move_to_pose` helper function to take in a desired starting location rather than taking the readings from the encoders as the starting location. This will reduce the discontinuity that occurs from the steady-state error.
 
 ```python
 
