@@ -310,12 +310,24 @@ In order to stack the blocks, we will need to start worrying about the z-height 
 
 <table style="width:100%; border-collapse:collapse;">
     <tr>
-        <td style="padding:8px;"><img src="{{ site.baseurl }}/assets/assignment8/so101_workspace_z0.014.png" alt="1 Block Height Workspace" style="width:100%; height:auto;" /></td>
-        <td style="padding:8px;"><img src="{{ site.baseurl }}/assets/assignment8/so101_workspace_z0.043.png" alt="2 Block Height Workspace" style="width:100%; height:auto;" /></td>
+        <td style="padding:8px; text-align:center;">
+            <img src="{{ site.baseurl }}/assets/assignment8/so101_workspace_z0.014.png" alt="1 Block Height Workspace" style="width:100%; height:auto;" />
+            <div style="padding-top:6px;"><strong>Middle of First Block</strong></div>
+        </td>
+        <td style="padding:8px; text-align:center;">
+            <img src="{{ site.baseurl }}/assets/assignment8/so101_workspace_z0.043.png" alt="2 Block Height Workspace" style="width:100%; height:auto;" />
+            <div style="padding-top:6px;"><strong>Middle of Second Block</strong></div>
+        </td>
     </tr>
     <tr>
-        <td style="padding:8px;"><img src="{{ site.baseurl }}/assets/assignment8/so101_workspace_z0.071.png" alt="3 Block Height Workspace" style="width:100%; height:auto;" /></td>
-        <td style="padding:8px;"><img src="{{ site.baseurl }}/assets/assignment8/so101_workspace_z0.100.png" alt="4 Block Height Workspace" style="width:100%; height:auto;" /></td>
+        <td style="padding:8px; text-align:center;">
+            <img src="{{ site.baseurl }}/assets/assignment8/so101_workspace_z0.071.png" alt="3 Block Height Workspace" style="width:100%; height:auto;" />
+            <div style="padding-top:6px;"><strong>Middle of Third Block</strong></div>
+        </td>
+        <td style="padding:8px; text-align:center;">
+            <img src="{{ site.baseurl }}/assets/assignment8/so101_workspace_z0.100.png" alt="4 Block Height Workspace" style="width:100%; height:auto;" />
+            <div style="padding-top:6px;"><strong>Middle of Fourth Block</strong></div>
+        </td>
     </tr>
 </table>
 
