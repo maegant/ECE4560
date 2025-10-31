@@ -11,6 +11,10 @@ usemathjax: true
 
 For this module, you will be implementing the inverse kinematics algorithm from Lab 7 on hardware. The goal is to pick up two separate blocks and stack them on top of eachother.
 
+{: .note}
+> Before completing this week's lab, make sure that your inverse kinematics are working in simulation. If you are having difficulty, try revisiting the instructions for Lab 7 which have since been updated.
+
+
 ## Outline 
 {: .no_toc }
 

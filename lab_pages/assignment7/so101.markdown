@@ -18,6 +18,11 @@ For this module, we will be writing code to calculate the inverse kinematics for
 * TOC
 {:toc}
 
+## Assignment Part 0: Redo the Forward Kinematics
+To make the inverse kinematics derivation easier, I recommend redoing the forward kinematics so that the tool frame is in the same orientation as the wrist frame when it's pointed straight down. This can be done by modifying the orientation of the tool frame to match the diagram below:
+
+![SO-101 Frame Diagram]({{ site.baseurl }}/assets/assignment7/new-config.png)
+
 ## Assignment Part 1: Derive the Inverse Kinematics
 
 ### 1a) Set up Inverse Kinematics Functions
