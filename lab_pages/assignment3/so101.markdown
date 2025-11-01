@@ -189,13 +189,11 @@ def move_to_pose(bus, desired_position, duration):
         time.sleep(0.02)  # 50 Hz loop
     
 def hold_position(bus, duration):
-    current_pos = bus.sync_read("Present_Position")
     start_time = time.time()
     while True:
         t = time.time() - start_time
         if t > duration:
             break
-        bus.sync_write("Goal_Position", current_pos, normalize=True)
         time.sleep(0.02)  # 50 Hz loop
 ```
 

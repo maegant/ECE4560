@@ -7,6 +7,6 @@ nav_order: 9
 ---
 
 This assignment will start exploring trajectory generation.
-- The manipulator arm tracks will create a cubic spline between two joint configurations.
+- The SO-101 and planar manipulator arm tracks will both create a cubic spline between two joint configurations.
 - The turtlebot track will create a cubic spline between a initial and final global position.
 - The biped track will perform the resolved rate and optimal control modules to produce a reference trajectory.
