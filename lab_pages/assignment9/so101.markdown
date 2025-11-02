@@ -98,13 +98,6 @@ and the model (so101_new_calib.xml) to accept velocity inputs for the motors.
 > For some very strange reason burried in the depths of MuJoCo, the `<default>` class does not work for setting the Kd gains. For this reason, you need to list the gains within the `<actuator>` section explicitly as shown in the code block above. Note that I've changed these gains from our previous labs to have improved tracking.
 
 On hardware, velocity commmands are not currently supported by the LeRobot hardware code, so we will still only send position commands to the robot. 
-<!-- On Hardware, we will send velocity commands as follows: 
-```python
-    # Send command
-    offset_dict = offset_config(position_dict)
-    bus.sync_write("Goal_Position", offset_dict, normalize=True)
-    bus.sync_write("Goal_Velocity", velocity_dict, normalize=True)
-``` -->
 
 
 ## Assignment Part 2: Test in Simulation
@@ -231,6 +224,23 @@ Lastly, implement your cubic spline trajectory using the `move_to_pose_cubic` fu
 
 <!-- ### Adding Velocity Commands
 If you'd like to make the motion even better, we will need to configure the robot arms to accept velocity commands. To do this, we will write a new `setup_motors_velocity` function within the utils file as follows: -->
+
+## Optional Challenge - Straight Line Path in Task Space
+
+If you are looking for an additional challenge, try implementing a straight line in task space between two desired positions. What we've been doing so far has implemented a straight line in joint space. But if instead we want a straight line path in task space, we have two options:
+1. Implement IK in each control loop to track a straight line path in the end-effector position. If you want to still use a cubic spline for this method, you will need to implement the cubic spline for time rescaling as discussed in Lecture 21.
+2. Implement resolved-rate trajectory design (more complicated than necessary since we have closed-form solutions for IK).
+
+Below shows the results from Method 1 (using cubic splines for time rescaling with IK in the control loop tracking a straight-line path in task space). You will be implementing Method 2 for the homework component of Assignment 9. 
+
+<div class="video-container">
+  <iframe
+    src="https://www.youtube.com/embed/kHvB-P3Ifk4?si=cT5SBy5ZV2yC0mFw"
+    frameborder="0"
+    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+  ></iframe>
+</div>
 
 ## Submission Details
 As usual, please include a writeup in your homework submission about the lab this week. Describe the difference you saw between the cubic spline trajectory and the linear interpolation trajectory on both simulation and hardware. Discuss the tracking performance, smoothness of motion, and any other observations you had. 
