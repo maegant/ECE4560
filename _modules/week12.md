@@ -3,7 +3,7 @@ title: Week 12
 ---
 
 November 4
-: 19 - Trajectory Design 2
+: [19 - Trajectory Design 2](lecture19.pdf)
 
 November 6
 : 20 - Trajectory Design 3
