@@ -16,7 +16,7 @@ let planar_example = function(p) {
   let duration = 3;
   let startDelay = 1; // seconds
   let startAngles = [0, 0, 0];
-  let endAngles = [Math.PI/2, Math.PI/4, 0];
+  let endAngles = [Math.PI/2, Math.PI/4, Math.PI/6];
   const jointColors = ["purple", "orange", "teal"];
 
   // Plotting
