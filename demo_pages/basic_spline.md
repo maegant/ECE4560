@@ -1,13 +1,13 @@
 ---
 layout: page
-title: Basic Cubic Spline
+title: Basic Cubic Splines
 permalink: /cubic-spline/
 parent: Interactive Example
 nav_order: 5
 usemathjax: true
 ---
 
-# Cubic Spline in Joint Space
+# Cubic Splines in Joint Space
 
 Cubic spline interpolation creates a smooth trajectory between two points by using a cubic polynomial to interpolate the position. This results in smooth position and velocity profiles. Note that if we also wanted a smooth acceleration profile, we would need to use a quintic spline. But a cubic spline is sufficient for smooth profiles. The cubic polynomial is defined as:
 

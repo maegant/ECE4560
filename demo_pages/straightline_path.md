@@ -1,15 +1,15 @@
 ---
 layout: page
-title: Straight-Line Path
-permalink: /straight-line/
+title: Straight-Line Paths
+permalink: /straight-line-paths/
 parent: Interactive Example
 nav_order: 6
 usemathjax: true
 ---
 
-# Straight-Line Path in Task Space
+# Straight-Line Paths
 
-If we want to command a manipulator to move from one task-space configuration to another while following a straightline path (with the straight line being in task space), we will also need to use a cubic spline interpolation to create a smooth trajectory between two points. However, this cubic spline will now be applied to a time-scaling function that parameterizes the straight-line path.
+If we want to command a manipulator to move in a straight line (either in Joint Space or in Task Space), we will no longer be able to use a cubic spline directly on the joint angles. However, to maintain smooth profiles, we will still use a cubic spline but apply it to a time-scaling function instead. 
 
 This time-scaling function is also defined by a cubic polynomial:
 
@@ -28,7 +28,55 @@ $$
 
 where $$ T $$ is the duration of the trajectory.
 
-A simulation of the straight-line path with and without time-scaling is shown below:
+Using this time-scaling function, we can then directly command a straight line path either in Joint Space or Task Space as follows:
+
+**Joint Space Straight-Line Path:**
+
+We don't really _need_ to ever command a straight line in joint space since the cubic spline in joint space is typically sufficient, but if we wanted to, we could do so using:
+
+$$
+\theta(t) = (1-s)\theta_0 + s(t) \theta_f
+$$
+
+with the corresponding velocity profiles then given by:
+
+$$
+\dot{\theta}(t) = \dot{s}(t)(\theta_f - \theta_0)
+$$
+
+**Task Space Straight-Line Path:**
+
+Straight-line paths are more commonly commanded in task space. In this case, we can define the end-effector position at time $$t$$ as:
+
+$$
+p(t) = (1-s(t))p_0 + s(t) p_f
+$$
+
+if we want to also obtain the straight-line path for orientation, in order to respect motion on the Lie group, we can compute the transition between orientations using the matrix logarithm and exponential as follows:
+
+$$
+R(t) = R_0 \exp\left( \ln(R_0^T R_f) \, s(t) \right)
+$$
+
+Together this gives us the Lie group trajectory:
+
+$$
+g(t) = \begin{bmatrix} R(t) & p(t) \\ 0 & 1 \end{bmatrix}
+$$
+
+Then, to get the corresponding joint angles, we can use inverse kinematics at each time step.
+
+If we want to compute the corresponding velocity profiles, we must first start with the task-level velocity which we can respresent as the twist:
+
+$$
+\xi_s(t) = \dot{g}(t) g(t)^{-1}, \quad 
+\xi_b(t) = g(t)^{-1} \dot{g}(t)
+$$
+
+where $$\dot{g}(t)$$ is the time derivative of $$g(t)$$. If you do not have access to the time-derivative, then we will need to use waypoints and then compute the twist between each waypoint as $$\xi_b = \ln(g_1^{-1} g_2) / \Delta t$$.
+
+
+A simulation of the straight-line path in task space with and without time-scaling is shown below. Note that you can see that without time-scaling, the velocity profile would have discontinuities at the start and end of the trajectory.
 
 ---
 <div id="trajectory-container" style="display:flex; gap:20px; align-items:flex-start;">
