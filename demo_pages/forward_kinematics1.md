@@ -62,5 +62,11 @@ The following interactive GUI demonstrates these calculations being computed in 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.12.0/math.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+
+
+<script>
+  const L1 = 120, L2 = 80, L3 = 20;
+</script>
+<script src="{{ site.baseurl }}/assets/js/robot_helpers.js"></script>
 <script src="{{ site.baseurl }}/assets/js/planar_example_lieGroups.js"></script>
 

@@ -3,32 +3,37 @@ layout: page
 title: Basic Cubic Spline
 permalink: /cubic-spline/
 parent: Interactive Example
-nav_order: 4
+nav_order: 5
 usemathjax: true
 ---
 
-# Basic Cubic Spline Interpolation in Joint Space
+# Cubic Spline in Joint Space
 
-If we want to command a manipulator to move from one configuration to another, we will get "jitter" if we simply command a step change in joint angles. Instead, we can use cubic spline interpolation to create a smooth trajectory between two points.
-
-This cubic spline is defined by the polynomial:
+Cubic spline interpolation creates a smooth trajectory between two points by using a cubic polynomial to interpolate the position. This results in smooth position and velocity profiles. Note that if we also wanted a smooth acceleration profile, we would need to use a quintic spline. But a cubic spline is sufficient for smooth profiles. The cubic polynomial is defined as:
 
 $$ 
-\theta(t) = a_0 + a_1 t + a_2 t^2 + a_3 t^3
+p(t) = a_0 + a_1 t + a_2 t^2 + a_3 t^3
 $$
 
-where the coefficients $$(a_0, a_1, a_2, a_3)$$ are determined by the boundary conditions at the start and end of the trajectory segment. If we start and end with zero velocity, the coefficients are given by:
+If we start with the boundary conditions:
 
 $$
-a_0 = \theta_i, \quad
+p(0) = \theta_0, \quad
+p(T) = \theta_f, \quad
+\dot{p}(0) = 0, \quad
+\dot{p}(T) = 0
+$$
+
+then we can solve for the coefficients $$(a_0, a_1, a_2, a_3)$$ as follows:
+
+$$
+a_0 = \theta_0, \quad
 a_1 = 0, \quad
-a_2 = \frac{3}{T^2} (\theta_f - \theta_i), \quad
-a_3 = -\frac{2}{T^3} (\theta_f - \theta_i)
+a_2 = \frac{3(\theta_f - \theta_0)}{T^2}, \quad
+a_3 = -\frac{2(\theta_f - \theta_0)}{T^3}
 $$
 
-where $$\theta_i $$ and $$ \theta_f $$ are the initial and final joint angles, and $$ T $$ is the duration of the trajectory.
-
-A simulation of each of the different motions is shown below:
+A demonstration of this cubic spline interpolation is shown below. For comparison purposes, a discrete change in desired joint position (called a step input) as well as a linear interpolation between the start and end positions are also shown. You should be able to see that the cubic spline results in smooth position, velocity, and acceleration profiles compared to the other two methods.
 
 ---
 <div id="trajectory-container" style="display:flex; gap:20px; align-items:flex-start;">
@@ -58,7 +63,7 @@ A simulation of each of the different motions is shown below:
     <div style="display:flex; gap:4px;">
       <input id="end1" type="number" value="90" style="width:50px;">
       <input id="end2" type="number" value="45" style="width:50px;">
-      <input id="end3" type="number" value="0" style="width:50px;">
+      <input id="end3" type="number" value="30" style="width:50px;">
     </div>
 
     <label>Duration (s)</label>

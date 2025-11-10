@@ -1,14 +1,13 @@
 let planar_example = function(p) {
   // Link lengths
-  let L1 = 120;
-  let L2 = 80;
-  let L3 = 20;
   let clawLength = 20;
   let clawAngle = Math.PI / 6;
 
   // Joint angles (radians)
   let theta1 = 0, theta2 = 0, theta3 = 0;
   let slider1, slider2, slider3;
+
+  let interpPoints = [];  // to store (x, y) pairs from linearInterp
 
   // Trajectory playback
   let playing = false;
@@ -27,6 +26,7 @@ let planar_example = function(p) {
 
   let container = document.getElementById("trajectory-canvas");
   container.style.position = "relative";
+
 
   p.setup = function() {
     let canvas = p.createCanvas(500,400);
@@ -90,22 +90,20 @@ let planar_example = function(p) {
       return btn;
     }
 
-    modeButtons.step = createModeButton("step","Step");
-    modeButtons.linear = createModeButton("linear","Linear");
-    modeButtons.cubic = createModeButton("cubic","Cubic Spline");
-    modeButtons.cubic.style.background="#aaf"; // default active
+    modeButtons.linear = createModeButton("linear","No Time-Scaling");
+    modeButtons.time_scaling = createModeButton("time_scaling","Time-Scaling");
+    modeButtons.linear.style.background="#aaf"; // default active
 
     // Play trajectory button
     document.getElementById("playTrajectoryBtn").onclick = () => {
-      startAngles = [
-        p.radians(parseFloat(document.getElementById("start1").value)),
-        p.radians(parseFloat(document.getElementById("start2").value)),
-        p.radians(parseFloat(document.getElementById("start3").value))
+      startPos = [
+        parseFloat(document.getElementById("start1").value),
+        parseFloat(document.getElementById("start2").value)
       ];
-      endAngles = [
-        p.radians(parseFloat(document.getElementById("end1").value)),
-        p.radians(parseFloat(document.getElementById("end2").value)),
-        p.radians(parseFloat(document.getElementById("end3").value))
+      startAngles = inverse_kinematics(startPos[0], startPos[1]);
+      endPos = [
+        parseFloat(document.getElementById("end1").value),
+        parseFloat(document.getElementById("end2").value)
       ];
       duration = parseFloat(document.getElementById("duration").value);
       startTime = p.millis() / 1000;
@@ -176,7 +174,7 @@ let planar_example = function(p) {
   }
 
   function drawPlots() {
-    function plotSeriesInDiv(divId, accessor, label) {
+    function plotSeriesInDiv(divId, accessor, label, length) {
       const container = document.getElementById(divId);
 
       // Create a canvas inside the div if it doesn't exist
@@ -236,7 +234,7 @@ let planar_example = function(p) {
       if (yMin === yMax) { yMin -= 1; yMax += 1; }
       const yRange = yMax - yMin;
 
-      for (let j = 0; j < 3; j++) {
+      for (let j = 0; j < length; j++) {
         ctx.beginPath();
         ctx.strokeStyle = jointColors[j];
         ctx.lineWidth = 2;
@@ -249,9 +247,8 @@ let planar_example = function(p) {
         ctx.stroke();
       }
     }
-    plotSeriesInDiv("plot-p",   d => d.pos, "p(t)");
-    plotSeriesInDiv("plot-pdot", d => d.vel, "ṗ(t)");
-    plotSeriesInDiv("plot-pddot", d => d.acc, "p̈(t)");
+    plotSeriesInDiv("plot-t",   d => d.s, "s(t)", 1);
+    plotSeriesInDiv("plot-p",   d => d.pos, "p(t)", 3);
   }
 
   // --- Main draw loop ---
@@ -271,68 +268,63 @@ let planar_example = function(p) {
       let tNow = p.millis() / 1000;
       let t = tNow - startTime;
       let tEffective = tNow - startTime - startDelay;
-      let tau = tEffective / duration;  // normalized [0,1]
+      let tau = Math.max(0, Math.min(duration, tEffective)); 
+      let [startAngle1, startAngle2, startAngle3] = inverse_kinematics(startPos[0], startPos[1]); 
+      let startAngles = [startAngle1, startAngle2, startAngle3];
+      let [endAngle1, endAngle2, endAngle3] = inverse_kinematics(endPos[0], endPos[1]);
+      let endAngles = [endAngle1, endAngle2, endAngle3];
+      [theta1, theta2, theta3] = [0,1,2].map(i => startAngles[i])
+      let lastAngles = startAngles;
+      let lastVel = [0, 0, 0];
+      let s, v, a;
       
-      function holdPosition(theta0, thetaf, tau) {
-          // Ignore thetaf and tau during hold; stay at theta0
-          let theta;
-          if (tau < 0.5) theta = theta0;
-          else if (tau > 0.5) theta = thetaf;
-          let vel = 0;
-          let acc = 0;
-          return [theta, vel, acc];
+      function time_scalingInterp(tau) {
+        // // cubic time scaling
+        let a0 = 0;
+        let a1 = 0;
+        let a2 = 3 / (duration * duration);
+        let a3 = -2 / (duration * duration * duration);
+
+        s = (a2 * (tau * tau)) + (a3 * (tau * tau * tau));
+
+        // // interpolate Cartesian position
+        let x = ((1 - s) * startPos[0]) + (s * endPos[0]);
+        let y = ((1 - s) * startPos[1]) + (s * endPos[1]);
+
+        interpPoints.push({ x, y });
+
+        // inverse kinematics
+        [theta1, theta2, theta3] = inverse_kinematics(x, y);
+
+        // // approximate joint velocity/accel from time-scaling
+        curAngles = [theta1, theta2, theta3];
+        let vel = [0,0,0];
+        let acc = [0,0,0];
+
+        return [theta1, theta2, theta3, vel, acc]; 
       }
 
-      function cubicInterp(theta0, thetaf, tau) {
-        let theta = theta0 + (thetaf - theta0)*(3*tau*tau - 2*tau*tau*tau);
-        let vel   = (thetaf - theta0)*(6*tau - 6*tau*tau)/duration;
-        let acc   = (thetaf - theta0)*(6 - 12*tau)/(duration*duration);
-        return [theta, vel, acc];
-      }
+      function linearInterp(tau) {
+          s = tau/duration;
+          let x = ((1-s)*startPos[0]) + (s * endPos[0]);
+          let y = ((1-s)*startPos[1]) + (s * endPos[1]);
+          interpPoints.push({ x, y });
 
-      function linearInterp(theta0, thetaf, tau) {
-          let theta = theta0 + tau * (thetaf - theta0);
-          let vel = (thetaf - theta0) / duration;
-          let acc = 0;
+          [theta1, theta2, theta3] = inverse_kinematics(x, y);
+          curAngles = [theta1, theta2, theta3];
+          let vel = [0,0,0];
+          let acc = [0,0,0];
 
-          // Approximate the acceleration spike at the start
-          if (tau < 0.01) acc = vel / 0.0001;  // small time window
-          // Approximate the acceleration spike at the end
-          if (tau > 0.99) acc = -vel / 0.0001;
-
-          return [theta, vel, acc];
-      }
-
-      function stepInterp(theta0, thetaf, tau) {
-        let tau_step = 0.03;
-        if (tau < tau_step) {
-            let theta = theta0 + (tau/tau_step) * (thetaf - theta0);
-            let vel = (thetaf - theta0) / (tau_step * duration);
-            let acc = 0;  // can keep it 0, or compute if desired
-
-            // Approximate the acceleration spike at the start
-            if (tau < (0.01/tau_step)) acc = vel / 0.0001;  // small time window
-            // Approximate the acceleration spike at the end
-            if (tau > (0.99/tau_step)) acc = -vel / 0.0001;
-
-            return [theta, vel, acc];
-        } else {
-            return [thetaf, 0, 0];
-        }
+          return [theta1, theta2, theta3, vel, acc]; 
       }
 
       // Choose the interpolation function based on mode
       let interpFunc;
-      if (t < startDelay || t > duration + startDelay) interpFunc = holdPosition;
-      else if (trajectoryMode === "cubic") interpFunc = cubicInterp;
-      else if (trajectoryMode === "linear") interpFunc = linearInterp;
-      else if (trajectoryMode === "step") interpFunc = stepInterp;
+      if (trajectoryMode === "linear") interpFunc = linearInterp;
+      else if (trajectoryMode === "time_scaling") interpFunc = time_scalingInterp;
+      [theta1, theta2, theta3, v, a] = interpFunc(tau);
 
-      [theta1, theta2, theta3] = [0,1,2].map(i => interpFunc(startAngles[i], endAngles[i], tau)[0]);
-      let v = [0,1,2].map(i => interpFunc(startAngles[i], endAngles[i], tau)[1]);
-      let a = [0,1,2].map(i => interpFunc(startAngles[i], endAngles[i], tau)[2]);
-
-      plotData.push({ t, pos:[theta1,theta2,theta3], vel:v, acc:a });
+      plotData.push({ t, pos:[theta1,theta2,theta3], s:[s]});
 
       slider1.value(p.degrees(theta1));
       slider2.value(p.degrees(theta2));
@@ -346,7 +338,7 @@ let planar_example = function(p) {
     }
 
     let result = computeFK_Lie(theta1, theta2, theta3);
-    let pts = result.points, g = result.transforms;
+    let pts = result.points;
 
     // Add current end-effector position to the trace
     eeTrace.push({ x: pts[3].x, y: pts[3].y });
@@ -422,6 +414,12 @@ let planar_example = function(p) {
     p.endShape();
 
     p.drawingContext.setLineDash([]); // reset to solid for other drawings
+
+    // Draw target point for debugging
+    // p.fill(255,0,0);
+    // p.noStroke();
+    // let target = computeFK_Lie(startAngles);
+    // p.ellipse(target.x, target.y, 10, 10);
 
     // Draw plots
     drawPlots();
