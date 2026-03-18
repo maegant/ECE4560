@@ -1,8 +1,9 @@
 ---
 layout: page
-title: Piktul Robot Arm
+title: 1 - Project Overview
 permalink: /assignment1-piktul/
-parent: 1 - Project Threads
+parent: Piktul/Lynx Robot Arms
+nav_order: 1
 ---
 
 This thread was the original laboratory project for ECE 4560 and has two main robot arms: a planar robot arm (Piktul) and a 3D robot arm (Lynx6). For the purpose of our course, this thread will focus on the Piktul arm.

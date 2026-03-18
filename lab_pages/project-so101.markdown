@@ -1,0 +1,14 @@
+---
+layout: page
+title: SO-101 Robot Arms
+permalink: /project-so101/
+parent: Lab
+nav_order: 1
+has_children: true
+---
+
+The SO-101 thread is brand new for Fall 2025 and features the open-sourced [SO-101 Arm](https://github.com/TheRobotStudio/SO-ARM100) designed by RobotStudio in collaboration with Hugging Face. Students following this track will develop Python code for hardware control, simulation in MuJoCo, forward kinematics, inverse kinematics, and trajectory generation.
+
+![SO-101 Robot Arm]({{ site.baseurl }}/assets/SO101_Follower.webp)
+
+Documentation for this track is updated weekly. Some videos of the hardware can be found [here](https://huggingface.co/docs/lerobot/so101).

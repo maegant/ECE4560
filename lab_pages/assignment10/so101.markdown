@@ -1,8 +1,8 @@
 ---
 layout: page
 title: 10 - Final Project
-permalink: /lab10/
-parent: Lab
+permalink: /assignment10-so101/
+parent: SO-101 Robot Arms
 nav_order: 10
 ---
 
@@ -13,4 +13,4 @@ Each group is asked to prepare a 5 minute presentation that includes the followi
 1. One or more slides introducing the behavior that you set out to achieve on your robot.
 2. One or more slides explaining the procedure that you took to achieve your desired behavior. This should include a presentation of at least once concept from class (for example, if you use forward kinematics, please show at least one equation describing this computation)
 3. One or more slides with videos of the final behavior that you were able to achieve
-4. One slide discussing limitations of your approach and/or any challenges that you faced during the project. 
+4. One slide discussing limitations of your approach and/or any challenges that you faced during the project.

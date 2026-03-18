@@ -1,8 +1,9 @@
 ---
 layout: page
-title: Piktul Robot Arm
+title: 3 - Joint Space
 permalink: /assignment3-piktul/
-parent: 3 - Joint Space
+parent: Piktul/Lynx Robot Arms
+nav_order: 3
 ---
 
 Command the Piktul planar robot arm to go to the home position using the ‘testforwardkin.m’ function provided and explained [here](https://pvela.gatech.edu/classes/doku.php?id=ece4560:piktul:02fkin). If you’d like

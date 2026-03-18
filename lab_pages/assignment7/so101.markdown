@@ -1,8 +1,9 @@
 ---
 layout: page
-title: SO-101 Robot Arm
+title: 7 - Inverse Kinematics
 permalink: /assignment7-so101/
-parent: 7 - Inverse Kinematics
+parent: SO-101 Robot Arms
+nav_order: 7
 usemathjax: true
 ---
 

@@ -1,12 +1,12 @@
 ---
 layout: page
 title: 4 - MuJoCo
-permalink: /assignment4-so101/
-parent: SO-101 Robot Arms
+permalink: /assignment4-turtlebot/
+parent: Turtlebot
 nav_order: 4
 ---
 
-This week we will be exploring the use of mujoco to recreate our hardware code from last week. Thus, the first step is to download MuJoCo.
+This week, we will be exploring the physics simulator MuJoCo. We will use the SO-101 robot arm as an example robot to learn the basics of MuJoCo simulation, which you will then apply to your own robot in later assignments.
 
 ## Download and Run MuJoCo
 MuJoCo is a state-of-the-art physics engine (simulation environment). This software was recently (2021) acquired and made open-source by DeepMind and has become a staple of the robotics/ML community. For more information on MuJoCo, you can visit [their website](https://mujoco.readthedocs.io/en/stable/overview.html). The raw codebase is also available at the google-deepmind/mujoco repository on GitHub.
@@ -49,9 +49,9 @@ cd $ECE_FOLDER/simulation_code
 
 To test that your model was downloaded correctly, you can open it in a mujoco visualization window using the command:
 ```bash
-python -m mujoco.viewer --mjcf=model/scene.xml 
+python -m mujoco.viewer --mjcf=model/scene.xml
 ```
-Note that this opens the model `scene.xml` which is contains the actual xml (`so101_new_calib.xml`) as well as some additional items such as a floor and lighting. 
+Note that this opens the model `scene.xml` which is contains the actual xml (`so101_new_calib.xml`) as well as some additional items such as a floor and lighting.
 
 If you've downloaded your model correctly, you should see the following:
 ![Empty Mujoco Window]({{ site.baseurl }}/assets/assignment4/mujoco-so101.png)
@@ -90,14 +90,14 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
 ```
 
 ## Mujoco Helper Functions
-To "simulate" our SO101 code as closely as possible, we will create a few helper functions to replicate the dictionary nature of the robot positions and switch between radians and degrees (MuJoCo uses radians, but SO101 uses degrees and normalizes the gripper to the range 0-100).  
+To "simulate" our SO101 code as closely as possible, we will create a few helper functions to replicate the dictionary nature of the robot positions and switch between radians and degrees (MuJoCo uses radians, but SO101 uses degrees and normalizes the gripper to the range 0-100).
 
 1. Create a new helper file named `so101_mujoco_utils.py`:
 
 ```python
 import time
 import mujoco
-        
+
 def convert_to_dictionary(qpos):
     return {
         'shoulder_pan': qpos[0]*180.0/3.14159,    # convert to degrees
@@ -107,7 +107,7 @@ def convert_to_dictionary(qpos):
         'wrist_roll': qpos[4]*180.0/3.14159,      # convert to degrees
         'gripper': qpos[5]*100/3.14159            # convert to 0-100 range
     }
-    
+
 def convert_to_list(dictionary):
     return [
         dictionary['shoulder_pan']*3.14159/180.0,
@@ -184,7 +184,7 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
 
 Lastly, to find a reasonable starting position that matches what we typically see on hardware, we can use the mujoco.viewer to manually adjust the joint angles until we find the correct joint angle. Remember from before that this is done by running:
 ```bash
-python -m mujoco.viewer --mjcf=model/scene.xml 
+python -m mujoco.viewer --mjcf=model/scene.xml
 ```
 Note that you will need to pause the simulation before you can manually adjust the sliders. Also remember that you will need to convert between radians and degrees (the viewer displays the joint angles in radians). Adjust the joint angles until you find the following position:
 ![Empty Mujoco Window]({{ site.baseurl }}/assets/assignment4/mujoco-starting.png)
@@ -200,7 +200,7 @@ def move_to_pose(m, d, viewer, desired_position, duration):
     start_time = time.time()
     starting_pose = d.qpos.copy()
     starting_pose = convert_to_dictionary(starting_pose)
-    
+
     while True:
         t = time.time() - start_time
         if t > duration:
@@ -219,14 +219,14 @@ def move_to_pose(m, d, viewer, desired_position, duration):
         # Send command
         send_position_command(d, position_dict)
         mujoco.mj_step(m, d)
-        
+
         # Pick up changes to the physics state, apply perturbations, update options from GUI.
         viewer.sync()
-    
+
 def hold_position(m, d, viewer, duration):
     current_pos = d.qpos.copy()
     current_pos_dict = convert_to_dictionary(current_pos)
-    
+
     start_time = time.time()
     while True:
         t = time.time() - start_time
@@ -237,7 +237,7 @@ def hold_position(m, d, viewer, duration):
         viewer.sync()
 ```
 
-Use these helper functions to create a new simulation file (named something like `run_mujoco_simulation.py`) that 
+Use these helper functions to create a new simulation file (named something like `run_mujoco_simulation.py`) that
 1. Starts at the position shown in the figure above
 2. Moves to a desired position of all zeros across a total duration of 2.0 seconds
 3. Holds the desired position for 2.0 seconds
@@ -249,9 +249,9 @@ Note that since the `move_to_position` and `hold_position` functions call `mujoc
 with mujoco.viewer.launch_passive(m, d) as viewer:
 
   # Go to desired position
-  
+
   # Hold Position
-  
+
   # Return to starting
 ```
 

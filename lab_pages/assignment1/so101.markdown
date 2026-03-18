@@ -1,14 +1,49 @@
 ---
 layout: page
-title: SO-101 Robot Arm
+title: 1 - Project Overview
 permalink: /assignment1-so101/
-parent: 1 - Project Threads
+parent: SO-101 Robot Arms
+nav_order: 1
 ---
 
 ![SO-101 Robot Arm]({{ site.baseurl }}/assets/SO101_Follower.webp)
 
-This thread is brand new for Fall 2025! So it is currently the least documented, but students will have the opportunity to follow along and help develop new Python code for this robot.
+This thread was brand new for Fall 2025! Overall, this track features the new open-sourced [SO-101 Arm](https://github.com/TheRobotStudio/SO-ARM100) designed by RobotStudio in collaboration with Hugging Face.
 
-Overall, this track features the new open-sourced [SO-101 Arm](https://github.com/TheRobotStudio/SO-ARM100) designed by RobotStudio in collaboration with Hugging Face.
+Some examples of final projects with the SO-101 robot arms can be seen below.
 
-Documentation for this track will be updated weekly, but some videos of the hardware be found [here](https://huggingface.co/docs/lerobot/so101).
+### Example final demonstration from Fall 2025
+1. [Computer Vision Tracking](https://youtu.be/FVzDLpN1KQY){:target="_blank"} \\
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/FVzDLpN1KQY?si=J-Dlj9CtZ6rs7n0j" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+2. [ArUco Tag Follower](https://www.youtube.com/watch?v=sU2IApv3Ekg){:target="_blank"}  \\
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/sU2IApv3Ekg?si=OVmRT5VfG7cjcvWi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+3. [A Dual-Arm Robotic Chess Player](https://youtu.be/aJ9iRKbaKwA){:target="_blank"}  \\
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/aJ9iRKbaKwA?si=QEt8BbvYNj27m2SN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+4. [Light Painting](https://www.youtube.com/watch?v=Sb_lq7k-imk){:target="_blank"} (produced photo below)  \\
+    ![Project 4 Light Photo]({{ site.baseurl }}/assets/lab/group5-lightphoto.png)
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/Sb_lq7k-imk?si=VBFfigFF9HzLK0HJ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+5. [Tic Tac Toe](https://youtu.be/ap5xUeG_4cU){:target="_blank"} \\
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/ap5xUeG_4cU?si=D__-ma3e5f7F6vQK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+6. [Light Painting](https://youtu.be/8PBFhALc2Tg){:target="_blank"} (produced photos below)  \\
+    <div style="display: flex; gap: 10px;">
+        <div>
+            <img src="{{ site.baseurl }}/assets/lab/group7-lightphoto1.jpg" alt="Project 6 Light Photo 1">
+        </div>
+        <div>
+            <img src="{{ site.baseurl }}/assets/lab/group7-lightphoto2.jpg" alt="Project 6 Light Photo 2">
+        </div>
+    </div>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/8PBFhALc2Tg?si=znX4wd5OIRexi-3f" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+7. [Angry Birds](https://www.youtube.com/watch?v=NvJQWhBeiJQ){:target="_blank"}  \\
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/NvJQWhBeiJQ?si=aLDHp_gPsOZl9UQQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+8. [Letter-Drawing](https://www.youtube.com/watch?v=e-1EuWcqByk){:target="_blank"}  \\
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/e-1EuWcqByk?si=hyIvgHSUVhxeE70q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+

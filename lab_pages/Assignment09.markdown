@@ -2,8 +2,7 @@
 layout: page
 title: 9 - Trajectories
 permalink: /lab9/
-parent: Lab
-nav_order: 9
+nav_exclude: true
 ---
 
 This assignment will start exploring trajectory generation.

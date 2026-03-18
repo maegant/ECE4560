@@ -1,8 +1,9 @@
 ---
 layout: page
-title: SO-101 Robot Arm
+title: 2 - Setup
 permalink: /assignment2-so101/
-parent: 2 - Setup
+parent: SO-101 Robot Arms
+nav_order: 2
 ---
 
 <!-- 1. Because this is the first year using the SO-101 robot arms, you will first need to assemble it following the instructions [here](https://huggingface.co/docs/lerobot/en/so101). For this assignment, each group will need one "Follower" arm and one "Leader" arm. For the remainder of the course we will mostly be using the "Follower" arm. -->

@@ -1,8 +1,9 @@
 ---
 layout: page
-title: Biped
+title: 7 - Inverse Kinematics
 permalink: /assignment7-biped/
-parent: 7 - Inverse Kinematics
+parent: ROBOTIS Biped
+nav_order: 7
 usemathjax: true
 ---
 

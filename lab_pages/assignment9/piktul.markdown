@@ -1,8 +1,9 @@
 ---
 layout: page
-title: Piktul Robot Arm
+title: 9 - Trajectories
 permalink: /assignment9-piktul/
-parent: 9 - Trajectories
+parent: Piktul/Lynx Robot Arms
+nav_order: 9
 usemathjax: true
 ---
 

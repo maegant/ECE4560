@@ -1,8 +1,9 @@
 ---
 layout: page
-title: Biped
+title: 1 - Project Overview
 permalink: /assignment1-biped/
-parent: 1 - Project Threads
+parent: ROBOTIS Biped
+nav_order: 1
 ---
 
 The biped thread is relatively new and involves coding your own class to control a statically stable planar biped robot. This thread involves forward kinematics and trajectory optimization. 

@@ -1,8 +1,9 @@
 ---
 layout: page
-title: Turtlebot
+title: 1 - Project Overview
 permalink: /assignment1-turtlebot/
-parent: 1 - Project Threads
+parent: Turtlebot
+nav_order: 1
 ---
 
 The turtlebot thread introduces the Robot Operating System (ROS) in Linux to perform path planning. This thread is the least aligned with the content of the course and should only be selected if you're interested in path planning and vision. It does assume that there is some familiarity with linux, or that you can figure out the linux commands you need as you go (hopefully that is the case!).

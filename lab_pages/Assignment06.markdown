@@ -2,8 +2,7 @@
 layout: page
 title: 6 - Pick and Place
 permalink: /lab6/
-parent: Lab
-nav_order: 6
+nav_exclude: true
 ---
 
 The lab deliverables will differ this week based on which project track you have selected. 

@@ -1,8 +1,9 @@
 ---
 layout: page
-title: Piktul Robot Arm
+title: 2 - Setup
 permalink: /assignment2-piktul/
-parent: 2 - Setup
+parent: Piktul/Lynx Robot Arms
+nav_order: 2
 ---
 
 1. Complete the Piktul [setup](https://pvela.gatech.edu/classes/doku.php?id=ece4560:piktul:setup) module

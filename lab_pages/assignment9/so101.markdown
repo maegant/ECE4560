@@ -1,8 +1,9 @@
 ---
 layout: page
-title: SO-101 Robot Arm
+title: 9 - Trajectories
 permalink: /assignment9-so101/
-parent: 9 - Trajectories
+parent: SO-101 Robot Arms
+nav_order: 9
 usemathjax: true
 ---
 

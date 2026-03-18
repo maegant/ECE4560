@@ -1,8 +1,9 @@
 ---
 layout: page
-title: Biped
+title: 9 - Trajectories
 permalink: /assignment9-biped/
-parent: 9 - Trajectories
+parent: ROBOTIS Biped
+nav_order: 9
 usemathjax: true
 ---
 

@@ -1,0 +1,9 @@
+---
+layout: page
+title: 5 - Midterm
+permalink: /assignment5-so101/
+parent: SO-101 Robot Arms
+nav_order: 5
+---
+
+Due to the upcoming midterm, there is no lab component for assignment 5.
