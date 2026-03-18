@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Piktul/Lynx Robot Arms
-permalink: /project-piktul/
+permalink: /piktul/
 parent: Lab
 nav_order: 2
 has_children: true

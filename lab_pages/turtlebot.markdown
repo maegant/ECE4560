@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Turtlebot
-permalink: /project-turtlebot/
+permalink: /turtlebot/
 parent: Lab
 nav_order: 4
 has_children: true

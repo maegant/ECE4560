@@ -1,7 +1,7 @@
 ---
 layout: page
 title: ROBOTIS Biped
-permalink: /project-biped/
+permalink: /biped/
 parent: Lab
 nav_order: 3
 has_children: true

@@ -1,7 +1,7 @@
 ---
 layout: page
 title: SO-101 Robot Arms
-permalink: /project-so101/
+permalink: /so101/
 parent: Lab
 nav_order: 1
 has_children: true
