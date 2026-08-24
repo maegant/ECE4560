@@ -2,11 +2,11 @@
 title: Week 4
 ---
 
-September 9
-: Guest Lecture on Robotics
+September 15
+: 6 - Exponential Representation of Rotations
 
-September 11
-: [6 - Angular Velocity and Twists](lecture6.pdf)
+September 17
+: 7 - Exponential Representation of Motion
 
-September 12
-: **HW1 3 due**{: .label .label-red }
+September 18
+: **HW 3 due**{: .label .label-red }

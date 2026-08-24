@@ -2,12 +2,11 @@
 title: Week 2
 ---
 
-Aug 26
-: [2 - Rotation Matrices](lecture2.pdf)
+September 1
+: 2 - Coordinate Frames & Rotations
 
-Aug 28
-: [3 - Transformations](lecture3.pdf)
+September 3
+: 3 - Transformations
 
-Aug 29
-: **HW1 1 due**{: .label .label-red }
-
+September 4
+: **HW 1 due**{: .label .label-red }

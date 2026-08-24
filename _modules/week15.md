@@ -2,8 +2,11 @@
 title: Week 15
 ---
 
-November 25
-: [24 - Control for Locomotion](lecture24.pdf)
+December 1
+: Group Projects
 
-November 27
-: No Class - November Break
+December 3
+: Group Projects
+
+December 4
+: **HW 10 due**{: .label .label-red }

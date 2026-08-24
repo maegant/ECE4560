@@ -2,11 +2,8 @@
 title: Week 1
 ---
 
-Aug 19
+August 25
 : Syllabus + Introduction
-<!-- : [1 - Intro to Nonlinear Systems](pdfs/Lecture1.pdf) -->
 
-Aug 21
-: [1 - Planar Kinematics](lecture1.pdf)
-
-
+August 27
+: 1 - Planar Kinematics

@@ -2,11 +2,11 @@
 title: Week 5
 ---
 
-September 16
-: [7 - Velocity Overview](lecture7.pdf)
+September 22
+: 8 - Velocity of a Screw Motion
 
-September 18
-: [8 - Exponential Representation of Rotations](lecture8.pdf)
+September 24
+: 9 - Review
 
-September 19
-: **HW1 4 due**{: .label .label-red }
+September 25
+: **HW 4 due**{: .label .label-red }

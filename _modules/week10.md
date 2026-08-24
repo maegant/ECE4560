@@ -2,12 +2,8 @@
 title: Week 10
 ---
 
-October 21
-: [15 - Manipulator Jacobian 1](lecture15.pdf)
+October 27
+: 16 - Review
 
-October 23
-: [16 - Manipulator Jacobian 2 (Recorded!)](lecture16.pdf)
-
-October 24
-: **HW1 7 due**{: .label .label-red }
-
+October 29
+: **Midterm 2 Exam**{: .label .label-purple }

@@ -2,12 +2,11 @@
 title: Week 3
 ---
 
-September 2
-: [4 - Homogeneous Coordinates](lecture4.pdf)
+September 8
+: 4 - Homogeneous Coordinates
 
-September 4
-: [5 - Introduction to Velocity](lecture5.pdf)
+September 10
+: 5 - Velocity of a Rigid Body
 
-September 5
-: **HW1 2 due**{: .label .label-red }
-
+September 11
+: **HW 2 due**{: .label .label-red }

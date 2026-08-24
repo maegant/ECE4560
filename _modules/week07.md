@@ -2,8 +2,11 @@
 title: Week 7
 ---
 
-September 30
-: **Midterm Exam**{: .label .label-purple }
+October 6
+: No Class - Fall Break
 
-October 2
-: [11 - Introduction to Manipulators](lecture11.pdf)
+October 8
+: 11 - Forward Kinematics
+
+October 9
+: **HW 5 due**{: .label .label-red }

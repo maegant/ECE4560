@@ -2,11 +2,11 @@
 title: Week 8
 ---
 
-October 7
-: No Class - Fall Break
+October 13
+: 12 - Inverse Kinematics 1
 
-October 9
-: [12 - Forward Kinematics](lecture12.pdf)
+October 15
+: 13 - Inverse Kinematics 2
 
-
-
+October 16
+: **HW 6 due**{: .label .label-red }

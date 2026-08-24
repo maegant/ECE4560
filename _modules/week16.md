@@ -2,9 +2,8 @@
 title: Week 16
 ---
 
-December 2
-: 24 - Final Review
-: **HW1 10 due**{: .label .label-red }
+December 8
+: Final Exam Review
 
-December 4 (6-8:50pm)
+December 10 (6-8:50pm)
 : **Final Exam**{: .label .label-purple }

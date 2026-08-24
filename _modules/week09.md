@@ -2,11 +2,11 @@
 title: Week 9
 ---
 
-October 14
-: [13 - Inverse Kinematics 1](lecture13.pdf)
+October 20
+: 14 - Manipulator Jacobian 1
 
-October 16
-: [14 - Inverse Kinematics 2](lecture14.pdf)
+October 22
+: 15 - Manipulator Jacobian 2
 
-October 17
-: **HW1 6 due**{: .label .label-red }
+October 23
+: **HW 7 due**{: .label .label-red }

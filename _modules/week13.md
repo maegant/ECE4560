@@ -2,9 +2,11 @@
 title: Week 13
 ---
 
-November 11
-: [21 - Trajectory Design 4](lecture21.pdf)
+November 17
+: 21 - Trajectory Design 4
 
-November 13
-: [22 - Wrenches and Forces](lecture22.pdf)
+November 19
+: 22 - Wrenches and Forces
 
+November 20
+: **HW 9 due**{: .label .label-red }
