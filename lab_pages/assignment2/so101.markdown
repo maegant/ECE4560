@@ -98,7 +98,7 @@ Data is communicated from your computer to the robot arms via the two usb-c cabl
 
 1. First, connect both robot arms to your computer using the two usb-c cables. 
 
-2. Second, connect power to both robot arms using two 5V power cables.
+2. Second, connect power to both robot arms: you will need a 5V power supply for the leader arm (THIS IS IMPORTANT!), and a 12V power supply for the follower arm.
 
 3. After connecting all of the cables, we can find the port for each bus servo adapter (the controller board on the robot). To do this, we will run the following code, one time for each cable. When the command is run, follow the prompt and unplug the cable when prompted. 
 ```bash
