@@ -59,7 +59,7 @@ Note that these steps are taken from [the official setup instructions](https://h
 
 1. First, we will create a fresh conda environment for lerobot
 ```bash
-conda create -y -n so101 python=3.10
+conda create -y -n so101 python=3.12
 ```
 
 2. After creating the conda environment, you will need to activate it. You will also need to repeat this step to activate the environment every time you open a new terminal. 
@@ -172,6 +172,17 @@ lerobot-calibrate \
 Once you are connected and calibrated, you are ready to run teleoperation! 
 
 1. Run the following in a terminal. Note that you will need to update the ports and robot ids to the ones you identified and used in the above calibration commands:
+```bash
+python lerobot-teleoperate \
+    --robot.type=so101_follower \
+    --robot.port=/dev/tty.usbmodem58760431541 \ # <- The port of your follower arm robot
+    --robot.id=my_awesome_follower_arm \ # <- The unique name of your follower arm
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/tty.usbmodem58760431551 \  # <- The port of your leader arm robot
+    --teleop.id=my_awesome_leader_arm # <- The unique name of your leader arm
+```
+
+On a mac you may need to run using a slightly different command
 ```bash
 python -m lerobot.teleoperate \
     --robot.type=so101_follower \
