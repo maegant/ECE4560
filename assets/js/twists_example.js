@@ -4,11 +4,13 @@
 // The robot is drawn from above, matching the lecture figure:
 //   y_A points right, x_A points down, z_A points out of the screen.
 let twists_example = function(p) {
-  // Link lengths (m)
-  const L1 = 1.0;
-  const L2 = 0.7;
+  // Link lengths (m), set by sliders; the view is sized for the largest values
+  let L1 = 1.0;
+  let L2 = 0.7;
+  const L1_MAX = 1.5;
+  const L2_MAX = 1.0;
 
-  const CANVAS_H = 440;
+  const CANVAS_H = 480;
   const COLOR_S = [217, 72, 15];   // spatial quantities
   const COLOR_B = [28, 126, 214];  // body quantities
   const VEL_SCALE = 0.4;           // arrow length (in units of S) per m/s
@@ -170,11 +172,11 @@ let twists_example = function(p) {
 
   function layout() {
     const W = p.width, H = p.height;
-    // world y spans [-0.35, L1 + L2 + 0.35]; world x spans +/-(L2 + 0.45)
-    const ySpan = L1 + L2 + 0.7;
-    const xSpan = 2*(L2 + 0.45);
+    // world y spans [-0.35, L1_MAX + L2_MAX + 0.35]; world x spans +/-(L2_MAX + 0.45)
+    const ySpan = L1_MAX + L2_MAX + 0.7;
+    const xSpan = 2*(L2_MAX + 0.45);
     S = Math.min((W - 20)/ySpan, (H - 20)/xSpan);
-    ox = W/2 - S*(L1 + L2)/2;
+    ox = W/2 - S*(L1_MAX + L2_MAX)/2;
     oy = H/2;
   }
 
@@ -191,6 +193,7 @@ let twists_example = function(p) {
     layout();
 
     for (const id of ["thetaSlider", "thetaValue", "speedSlider", "speedValue",
+                      "l1Slider", "l1Value", "l2Slider", "l2Value",
                       "playBtn", "resetBtn", "modePlay", "modeDrag", "thetaDot",
                       "ws", "vs0", "vs1", "wb", "vb0", "vb1", "pd0", "pd1"]) {
       el[id] = document.getElementById("tw-" + id);
@@ -200,6 +203,14 @@ let twists_example = function(p) {
       if (playing) setPlaying(false);
       theta = parseFloat(el.thetaSlider.value) * Math.PI/180;
       el.thetaValue.textContent = `${parseFloat(el.thetaSlider.value).toFixed(1)}°`;
+    });
+    el.l1Slider.addEventListener("input", () => {
+      L1 = parseFloat(el.l1Slider.value);
+      el.l1Value.textContent = `${L1.toFixed(2)} m`;
+    });
+    el.l2Slider.addEventListener("input", () => {
+      L2 = parseFloat(el.l2Slider.value);
+      el.l2Value.textContent = `${L2.toFixed(2)} m`;
     });
     el.speedSlider.addEventListener("input", () => {
       el.speedValue.textContent = `${parseFloat(el.speedSlider.value).toFixed(1)} rad/s`;
@@ -211,6 +222,11 @@ let twists_example = function(p) {
       prevTheta = 0;
       thetaDot = 0;
     });
+
+    // pick up slider positions the browser may have restored on reload
+    el.l1Slider.dispatchEvent(new Event("input"));
+    el.l2Slider.dispatchEvent(new Event("input"));
+    el.speedSlider.dispatchEvent(new Event("input"));
 
     setTheta(0);
     setPlaying(false);

@@ -40,17 +40,17 @@ $$
 
 ## Interactive Demo
 
-The robot is drawn from above, so $\hat{z}_A$ and $\hat{z}_B$ point out of the screen. Drag the $\theta$ slider to rotate the joint by hand, or press **Play** to rotate at a constant $\dot{\theta}$. The demo uses $l_1 = 1.0$ m and $l_2 = 0.7$ m.
+The robot is drawn from above, so $\hat{z}_A$ and $\hat{z}_B$ point out of the screen. Drag the $\theta$ slider to rotate the joint by hand, or press **Play** to rotate at a constant $\dot{\theta}$. The $l_1$ and $l_2$ sliders change the link lengths.
 
 <style>
   #tw-demo { margin: 1rem 0 2rem; }
   #tw-canvas { width: 100%; border: 1px solid #ddd; border-radius: 6px; overflow: hidden; line-height: 0; }
-  #tw-controls { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; align-items: center; margin: 0.75rem 0 0.25rem; }
-  #tw-controls label { display: flex; align-items: center; gap: 0.5rem; }
-  #tw-controls input[type=range] { width: 180px; max-width: 45vw; }
-  #tw-controls .tw-val { font-family: monospace; min-width: 5.5em; }
-  #tw-controls button { padding: 0.3rem 0.9rem; border: 1px solid #bbb; border-radius: 4px; background: #fff; cursor: pointer; font-size: 0.95rem; }
-  #tw-controls button:hover { background: #f0f0f0; }
+  .tw-controls { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; align-items: center; margin: 0.75rem 0 0.25rem; }
+  .tw-controls label { display: flex; align-items: center; gap: 0.5rem; }
+  .tw-controls input[type=range] { width: 180px; max-width: 45vw; }
+  .tw-controls .tw-val { font-family: monospace; min-width: 5.5em; }
+  .tw-controls button { padding: 0.3rem 0.9rem; border: 1px solid #bbb; border-radius: 4px; background: #fff; cursor: pointer; font-size: 0.95rem; }
+  .tw-controls button:hover { background: #f0f0f0; }
   #tw-mode { font-size: 0.85rem; color: #666; margin-bottom: 0.75rem; }
   #tw-readouts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; }
   .tw-card { border: 1px solid #ddd; border-left-width: 5px; border-radius: 6px; padding: 0.5rem 0.75rem; background: #fff; }
@@ -67,7 +67,7 @@ The robot is drawn from above, so $\hat{z}_A$ and $\hat{z}_B$ point out of the s
 <div id="tw-demo">
   <div id="tw-canvas"></div>
 
-  <div id="tw-controls">
+  <div class="tw-controls">
     <label>\(\theta\)
       <input id="tw-thetaSlider" type="range" min="-180" max="180" step="0.1" value="0">
       <span id="tw-thetaValue" class="tw-val">0.0°</span>
@@ -77,6 +77,16 @@ The robot is drawn from above, so $\hat{z}_A$ and $\hat{z}_B$ point out of the s
     <label>Play speed \(\dot{\theta}\)
       <input id="tw-speedSlider" type="range" min="-3" max="3" step="0.1" value="1">
       <span id="tw-speedValue" class="tw-val">1.0 rad/s</span>
+    </label>
+  </div>
+  <div class="tw-controls">
+    <label>\(l_1\)
+      <input id="tw-l1Slider" type="range" min="0.3" max="1.5" step="0.05" value="1.0">
+      <span id="tw-l1Value" class="tw-val">1.00 m</span>
+    </label>
+    <label>\(l_2\)
+      <input id="tw-l2Slider" type="range" min="0.3" max="1.0" step="0.05" value="0.7">
+      <span id="tw-l2Value" class="tw-val">0.70 m</span>
     </label>
   </div>
   <div id="tw-mode">
