@@ -48,9 +48,116 @@ Before communicating with the robots, you will need to configure your Python env
 ### Installing Miniconda
 Since python packages can quickly conflict and cause problems, we will be utilizing conda to create and manage python environments. We will be specifically utilizing Conda (miniconda to be exact) to manage our Python environments. 
 
-1. Follow the installation instructions [here](https://www.anaconda.com/docs/getting-started/miniconda/main). 
+Select your operating system below for command-line installation steps. These commands come from the official Anaconda documentation. If you run into trouble or want more details (including graphical installers), see the [Miniconda installation guide](https://www.anaconda.com/docs/getting-started/miniconda/main).
 
-2. You should be able to verify that Conda was installed properly by running any conda command. For example:
+<div class="os-tabs">
+  <div class="os-tabs-nav" role="tablist" aria-label="Operating system">
+    <button type="button" role="tab" data-os="windows">Windows</button>
+    <button type="button" role="tab" data-os="macos">macOS</button>
+    <button type="button" role="tab" data-os="linux">Linux</button>
+  </div>
+
+<div class="os-tab-panel" data-os="windows" role="tabpanel" markdown="1">
+
+For more details, see Anaconda's [Windows command-line install guide](https://www.anaconda.com/docs/getting-started/miniconda/install/windows-cli-install).
+
+1. Open **PowerShell** (this is also the default terminal in VS Code) and download the installer to your home folder:
+   ```powershell
+   cd ~
+   Invoke-WebRequest -Uri "https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe" -OutFile ".\Miniconda3-latest-Windows-x86_64.exe"
+   ```
+   If you are using **Command Prompt** instead, run:
+   ```bat
+   cd %USERPROFILE%
+   curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe --output .\Miniconda3-latest-Windows-x86_64.exe
+   ```
+
+2. Launch the installer:
+   ```powershell
+   .\Miniconda3-latest-Windows-x86_64.exe
+   ```
+   In the setup wizard, accept the license agreement, select **Just Me (recommended)**, and keep the default install location. The install path must not contain spaces or special characters. Then click **Install**.
+
+3. When the installer finishes, open **Anaconda Prompt** from the Start menu. You should see `(base)` at the start of the prompt, e.g. `(base) C:\Users\<username>>`.
+
+4. To use `conda` in PowerShell and the VS Code terminal (not just Anaconda Prompt), run the following in Anaconda Prompt, then close and reopen your terminals:
+   ```bat
+   conda init powershell
+   ```
+
+{: .note }
+If PowerShell reports that running scripts is disabled after `conda init`, run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` in PowerShell and reopen the terminal.
+
+</div>
+
+<div class="os-tab-panel" data-os="macos" role="tabpanel" markdown="1">
+
+For more details, see Anaconda's [macOS command-line install guide](https://www.anaconda.com/docs/getting-started/miniconda/install/mac-cli-install).
+
+1. Open **Terminal** and download and run the installer that matches your Mac's chip. Not sure which you have? Click the Apple menu > **About This Mac**: "Apple M1/M2/M3/..." means Apple Silicon, and "Intel" means Intel.
+
+   **Apple Silicon (M-series):**
+   ```bash
+   cd ~
+   curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh
+   bash ~/Miniconda3-latest-MacOSX-arm64.sh
+   ```
+
+   **Intel:**
+   ```bash
+   cd ~
+   curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
+   bash ~/Miniconda3-latest-MacOSX-x86_64.sh
+   ```
+
+2. Follow the installer prompts: press **Enter** to scroll through the license, type `yes` to accept it, press **Enter** to accept the default install location, and type `yes` when asked whether to initialize conda.
+
+3. Refresh your shell (or close and reopen Terminal):
+   ```bash
+   source ~/.zshrc
+   ```
+   You should now see `(base)` at the start of your terminal prompt.
+
+{: .note }
+Anaconda is phasing out support for Intel Macs; the final Miniconda release for Intel Macs is version 25.7.x. The Intel installer above still works for this course.
+
+</div>
+
+<div class="os-tab-panel" data-os="linux" role="tabpanel" markdown="1">
+
+For more details, see Anaconda's [Linux install guide](https://www.anaconda.com/docs/getting-started/miniconda/install/linux-install).
+
+1. Open a terminal and download and run the installer that matches your processor. Run `uname -m` if you are not sure: `x86_64` is most PCs, and `aarch64` is ARM (e.g. a Raspberry Pi or Jetson).
+
+   **x86_64:**
+   ```bash
+   cd ~
+   curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+   bash ~/Miniconda3-latest-Linux-x86_64.sh
+   ```
+
+   **aarch64:**
+   ```bash
+   cd ~
+   curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh
+   bash ~/Miniconda3-latest-Linux-aarch64.sh
+   ```
+
+2. Follow the installer prompts: press **Enter** to scroll through the license, type `yes` to accept it, press **Enter** to accept the default install location, and type `yes` when asked whether to initialize conda.
+
+3. Refresh your shell (or close and reopen the terminal). Use the command for your shell (`bash` is the default on most distributions):
+   ```bash
+   source ~/.bashrc   # bash
+   source ~/.zshrc    # zsh
+   ```
+   You should now see `(base)` at the start of your terminal prompt.
+
+</div>
+</div>
+
+<script src="{{ site.baseurl }}/assets/js/os-tabs.js"></script>
+
+Once installed, verify that Conda works by running any conda command. For example:
 - ``conda list`` -> Displays a list of packages installed in your active environment and their versions.
 - ``conda --version`` -> Should display conda’s version number
 

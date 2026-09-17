@@ -14,3 +14,45 @@
   height: 100%;
   border: 0;
 }
+
+/* Operating-system selector tabs (behavior in assets/js/os-tabs.js) */
+.os-tabs {
+  margin: 1rem 0;
+}
+
+.os-tabs-nav {
+  display: none; /* Shown once JavaScript is running; otherwise all panels stay visible */
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid $border-color;
+}
+
+.os-tabs.is-ready .os-tabs-nav {
+  display: flex;
+}
+
+.os-tabs-nav button {
+  padding: 0.5rem 1rem;
+  margin-bottom: -2px;
+  font: inherit;
+  font-weight: 500;
+  color: $body-text-color;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+}
+
+.os-tabs-nav button:hover {
+  color: $link-color;
+}
+
+.os-tabs-nav button[aria-selected="true"] {
+  color: $link-color;
+  border-bottom-color: $link-color;
+}
+
+.os-tab-panel[hidden] {
+  display: none;
+}
