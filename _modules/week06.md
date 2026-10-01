@@ -6,4 +6,4 @@ September 29
 : **Midterm 1 Exam**{: .label .label-purple }
 
 October 1
-: 10 - Manipulators & Manipulator Analysis
+: 10 - [Manipulators & Manipulator Analysis](lecture10.pdf)
