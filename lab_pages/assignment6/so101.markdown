@@ -266,5 +266,5 @@ Your final robotic demonstration should look like the following:
 Please put away all supplies and return the desk to a clean position when you are done with lab. Please also let us know if anything breaks so that we can maintain the robots.
 
 ## Submission Details
-For the homework assignment, please show your robot behavior and simulation to one of the TAs during the lab office hours. If this is not possible, you may also email a video to the TAs (with Prof. Tucker cc-ed), but we would much prefer in-person demonstrations. For full credit, each member of each group must also write their own writeup (included in the homework submission) about what was implemented, and any challenges/difficulties that you had when writing/executing the code.
+To document the lab for this week, please record a video of your robot executing the full motion and upload it to youtube (it can be as an unlisted video). Then please include a link to the video with the homework submission. If you scan your homework, please make sure that the link is legible. As usual, also include in your submission a writeup (included in the homework submission) about what was implemented, and any challenges/difficulties that you had when writing/executing the code.
 
