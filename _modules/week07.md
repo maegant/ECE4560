@@ -6,7 +6,7 @@ October 6
 : No Class - Fall Break
 
 October 8
-: 11 - Forward Kinematics
+: 11 - [Forward Kinematics](lecture11.pdf)
 
 October 9
 : **HW 5 due**{: .label .label-red }
