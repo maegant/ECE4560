@@ -62,12 +62,6 @@ callouts:
     color: yellow
 
 
-# Aux links for the upper right navigation
-nav_external_links:
-  - title: MuJoCo Repository (Homework)
-    url: "https://github.gatech.edu/mtucker34/mujoco_example"
-    opens_in_new_tab: true
-
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
