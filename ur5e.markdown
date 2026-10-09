@@ -16,11 +16,6 @@ In these modules you implement the course material for a simulated
 the functions to fill in, and a script that runs the simulation using your code.
 
 1. [Forward Kinematics]({{ site.baseurl }}/ur5e-module1/)
-2. [Inverse Kinematics]({{ site.baseurl }}/ur5e-module2/)
-3. [Trajectories: Cubic Splines]({{ site.baseurl }}/ur5e-module3/)
-4. [Trajectories: Straight-Line Paths]({{ site.baseurl }}/ur5e-module4/)
-
-Optional: [Build Your Own Model]({{ site.baseurl }}/ur5e-bonus-models/)
 
 ## Setting up
 
