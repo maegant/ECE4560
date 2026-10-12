@@ -249,7 +249,6 @@ This will prevent the robot from slamming into the table when it terminates the 
 
 3. Execute the full sequence and verify that it visually matches what we see in simulation. In particular, does the first desired configuration align with our expected object location? In your writeup, comment on whether or not this prediction was accurate. 
 4. If the initial object location is not accurate, you may need to recalibrate. If it is still not accurate, you can use the `read_position` script from Assignment 3 to find a more appropriate starting and final joint configuration. Note that this will require also modifying the in-between joint configurations. 
-5. Show the TAs your robotic simulation and hardware. More details on the requirements for the assignment submission this week are provided below.
 
 Your final robotic demonstration should look like the following:
 
