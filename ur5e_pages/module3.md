@@ -5,6 +5,7 @@ permalink: /ur5e-module3/
 parent: UR5e Simulation
 nav_order: 3
 usemathjax: true
+published: false
 ---
 
 # Module 3: Trajectory Design with Cubic Splines

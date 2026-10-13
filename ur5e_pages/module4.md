@@ -5,6 +5,7 @@ permalink: /ur5e-module4/
 parent: UR5e Simulation
 nav_order: 4
 usemathjax: true
+published: false
 ---
 
 # Module 4: Trajectory Design with Straight-Line Paths

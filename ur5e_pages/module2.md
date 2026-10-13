@@ -5,6 +5,7 @@ permalink: /ur5e-module2/
 parent: UR5e Simulation
 nav_order: 2
 usemathjax: true
+published: false
 ---
 
 # Module 2: Inverse Kinematics

@@ -5,6 +5,7 @@ permalink: /ur5e-bonus-models/
 parent: UR5e Simulation
 nav_order: 5
 usemathjax: true
+published: false
 ---
 
 # Bonus: Building Your Own Robot Model
