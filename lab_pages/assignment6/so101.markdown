@@ -61,7 +61,7 @@ def get_gw1(theta1_deg):
     return pose
 ```
 
-Your forward kinematics should be based on the diagram shown below. The information shown on the diagram was obtained directly from the so-101 urdf used in Assignment 5. 
+Your forward kinematics can be done in a few different ways depending on where you want to define the end-effector frame. The first method uses the diagram shown below. The information shown on the diagram was obtained directly from the so-101 urdf used in Assignment 5. 
 
 <!-- ![SO-101 Frames]({{ site.baseurl }}/assets/assignment6/mujoco-frames.png) -->
 ![SO-101 Forward Kinematics Diagrams]({{ site.baseurl }}/assets/assignment6/FK-info.png)
@@ -69,7 +69,14 @@ Your forward kinematics should be based on the diagram shown below. The informat
 {: .note} 
 Since we are interested in the position of objects within the moving jaw's grasp, we added an _object_ frame as shown on the diagram. This object frame is directly translated/rotated from joint 5. This means that in our forward kinematics mapping we will actually ignore joint 6 (since the moving jaw does not influence where the object would be located). This is the same procedure/methodology as what we've been doing with the _tool_ frame in class.
 
-When you complete all of the `get_gxx()` functions, you can obtain the entire forward kinematics as follows:
+The second approach defines the end-effector frame on the inside edge of the fixed gripper. The benefit of this method is that it will make it easier to align the gripper to the edges of blocks later. 
+
+<!-- ![SO-101 Frames]({{ site.baseurl }}/assets/assignment6/mujoco-frames.png) -->
+![SO-101 Forward Kinematics Diagrams]({{ site.baseurl }}/assets/assignment6/FK-info-2.png)
+
+Using either of these options, complete all of the `get_gxx()` functions in `so101_forward_kinematics.py`.
+
+Once you complete all of the `get_gxx()` functions, you can obtain the entire forward kinematics as follows:
 
 ```python 
 def get_forward_kinematics(position_dict):
@@ -99,6 +106,49 @@ import numpy as np
 
 m = mujoco.MjModel.from_xml_path('model/scene.xml')
 d = mujoco.MjData(m)
+
+def show_frame(viewer, position, rotation, size=0.02):
+    # Draw a 3-axis frame using cylinders and cones as arrows.
+    # Each axis is aligned with the local z-direction of a geom, then
+    # rotated into the object's frame so x, y, and z are shown.
+    axis_length = 0.12
+    shaft_radius = max(0.003, size * 0.2)
+    cone_height = 0.03
+
+    axis_rotations = {
+        'x': np.array([[0.0, 0.0, 1.0],
+                       [0.0, 1.0, 0.0],
+                       [-1.0, 0.0, 0.0]], dtype=float),
+        'y': np.array([[1.0, 0.0, 0.0],
+                       [0.0, 0.0, 1.0],
+                       [0.0, -1.0, 0.0]], dtype=float),
+        'z': np.eye(3, dtype=float),
+    }
+    axis_colors = {'x': [1.0, 0.0, 0.0, 1.0],
+                   'y': [0.0, 1.0, 0.0, 1.0],
+                   'z': [0.0, 0.0, 1.0, 1.0]}
+
+    geoms_used = 0
+    for axis_name, local_axis_rot in axis_rotations.items():
+        world_rot = rotation @ local_axis_rot
+        axis_dir = world_rot[:, 2]
+
+        # Shaft: cylinder extending from the base to the tip.
+        shaft_half = axis_length / 2.0
+        shaft_center = position + axis_dir * shaft_half
+        mujoco.mjv_initGeom(
+            viewer.user_scn.geoms[geoms_used],
+            type=mujoco.mjtGeom.mjGEOM_CYLINDER,
+            size=[shaft_radius, shaft_half, 0.0],
+            pos=shaft_center,
+            mat=world_rot.flatten(),
+            rgba=axis_colors[axis_name]
+        )
+        geoms_used += 1
+
+    viewer.user_scn.ngeom = geoms_used
+    viewer.sync()
+    return
 
 def show_cylinder(viewer, position, rotation, radius=0.0245, halfheight=0.05, rgba=[1, 0, 0, 1]):
     # Add a cylinder aligned with z-axis
@@ -133,13 +183,18 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
   start = time.time()
   
   # Add a cylinder as a site for visualization
-  show_cylinder(viewer, object_position, object_orientation)
+  show_frame(viewer, object_position, object_orientation)
   
   # Hold Starting Position for 2 seconds
   hold_position(m, d, viewer, 20.0)
 ```  
 
-![Example Forward Kinematics]({{ site.baseurl }}/assets/assignment6/example-FK.png)
+The solution you see will depend on if you used approach 1 or 2 regarding how you defined the end-effector frame:
+
+
+| Approach 1 | Approach 2 |
+| --- | --- |
+| ![Approach 1 Forward Kinematics]({{ site.baseurl }}/assets/assignment6/solution-FK1.png) | ![Approach 2 Forward Kinematics]({{ site.baseurl }}/assets/assignment6/solution-FK2.png) |
 
 ## Assignment Part 2: Write Pick and Place code
 
