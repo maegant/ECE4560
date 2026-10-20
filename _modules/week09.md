@@ -3,7 +3,7 @@ title: Week 9
 ---
 
 October 20
-: 14 - Manipulator Jacobian 1
+: 14 - [Manipulator Jacobian 1](lecture14.pdf)
 
 October 22
 : 15 - Manipulator Jacobian 2
