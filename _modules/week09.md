@@ -6,7 +6,7 @@ October 20
 : 14 - [Manipulator Jacobian 1](lecture14.pdf)
 
 October 22
-: 15 - Manipulator Jacobian 2
+: 15 - [Manipulator Jacobian 2](lecture15.pdf)
 
 October 23
 : **HW 7 due**{: .label .label-red }
