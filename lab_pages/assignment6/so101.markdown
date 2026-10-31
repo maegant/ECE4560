@@ -54,27 +54,26 @@ def Rz(thetadeg):
                      [s, c, 0],
                      [0, 0, 1]])
 
+BASE_HEIGHT = 0.0047625  # meters, 3/16 in metal base under the robot
+
 def get_gw1(theta1_deg):
-    displacement = (0.0388353, 0.0, 0.0624)
+    displacement = (0.0388353, 0.0, BASE_HEIGHT + 0.0624)
     rotation = Rz(180) @ Rx(180) @ Rz(theta1_deg)
     pose = np.block([[rotation, np.array(displacement).reshape(3,1)], [0, 0, 0, 1]])
     return pose
 ```
 
-Your forward kinematics can be done in a few different ways depending on where you want to define the end-effector frame. The first method uses the diagram shown below. The information shown on the diagram was obtained directly from the so-101 urdf used in Assignment 5. 
+Note that every SO-101 arm in the lab is mounted on a 3/16" metal base, which raises the robot 0.0047625 m above the table and acrylic grid. The `BASE_HEIGHT` term in `get_gw1` accounts for this so that all heights are measured from the table. This is why the z-displacement in the code is larger than the 0.0624 shown on the diagram.
+
+Your forward kinematics will use the frames shown in the diagram below. The information shown on the diagram was obtained directly from the so-101 urdf used in Assignment 5.
 
 <!-- ![SO-101 Frames]({{ site.baseurl }}/assets/assignment6/mujoco-frames.png) -->
 ![SO-101 Forward Kinematics Diagrams]({{ site.baseurl }}/assets/assignment6/FK-info.png)
 
 {: .note} 
-Since we are interested in the position of objects within the moving jaw's grasp, we added an _object_ frame as shown on the diagram. This object frame is directly translated/rotated from joint 5. This means that in our forward kinematics mapping we will actually ignore joint 6 (since the moving jaw does not influence where the object would be located). This is the same procedure/methodology as what we've been doing with the _tool_ frame in class.
+Since we are interested in the position of objects within the moving jaw's grasp, we added an _object_ frame as shown on the diagram. This object frame has the same orientation as joint 5 and is only translated from it, so when the gripper is pointed downwards the object frame lines up with the world frame. This means that in our forward kinematics mapping we will actually ignore joint 6 (since the moving jaw does not influence where the object would be located). This is the same procedure/methodology as what we've been doing with the _tool_ frame in class.
 
-The second approach defines the end-effector frame on the inside edge of the fixed gripper. The benefit of this method is that it will make it easier to align the gripper to the edges of blocks later. 
-
-<!-- ![SO-101 Frames]({{ site.baseurl }}/assets/assignment6/mujoco-frames.png) -->
-![SO-101 Forward Kinematics Diagrams]({{ site.baseurl }}/assets/assignment6/FK-info-2.png)
-
-Using either of these options, complete all of the `get_gxx()` functions in `so101_forward_kinematics.py`.
+Using this diagram, complete all of the `get_gxx()` functions in `so101_forward_kinematics.py`.
 
 Once you complete all of the `get_gxx()` functions, you can obtain the entire forward kinematics as follows:
 
@@ -94,17 +93,18 @@ def get_forward_kinematics(position_dict):
 
 ### 1b) Test Forward Kinematics in MuJoCo
 
-To test whether or not your forward kinematics are valid, we will use a method similar to that done for the homework component this week. This method will plot an additional cylinder along the z-axis of the tool frame. If you've done your forward kinematics correctly, you should see the cylinder in the gripper when you run the following test script:
+To test whether or not your forward kinematics are valid, we will use a method similar to that done for the homework component this week. This method will plot an additional cylinder along the z-axis of the tool frame. If you've done your forward kinematics correctly, you should see the cylinder in the gripper when you run the following test script. Since the MuJoCo model does not include the metal base, this script also raises the robot by `BASE_HEIGHT` right after loading the model so that the simulation matches both your forward kinematics and the real robot. The robot will appear to float slightly above the floor, which is expected. Keep this line in all of your simulation scripts from now on:
 
 ```python
 import time
 import mujoco
 import mujoco.viewer
 from so101_mujoco_utils import set_initial_pose, send_position_command, move_to_pose, hold_position
-from so101_forward_kinematics import get_forward_kinematics
+from so101_forward_kinematics import get_forward_kinematics, BASE_HEIGHT
 import numpy as np
 
 m = mujoco.MjModel.from_xml_path('model/scene.xml')
+m.body('base').pos[2] = BASE_HEIGHT  # raise the robot to match the metal base
 d = mujoco.MjData(m)
 
 def show_frame(viewer, position, rotation, size=0.02):
@@ -189,12 +189,9 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
   hold_position(m, d, viewer, 20.0)
 ```  
 
-The solution you see will depend on if you used approach 1 or 2 regarding how you defined the end-effector frame:
+If your forward kinematics are correct, you should see the following:
 
-
-| Approach 1 | Approach 2 |
-| --- | --- |
-| ![Approach 1 Forward Kinematics]({{ site.baseurl }}/assets/assignment6/solution-FK1.png) | ![Approach 2 Forward Kinematics]({{ site.baseurl }}/assets/assignment6/solution-FK2.png) |
+![Forward Kinematics Solution]({{ site.baseurl }}/assets/assignment6/solution-FK1.png)
 
 ## Assignment Part 2: Write Pick and Place code
 
@@ -318,6 +315,19 @@ Your final robotic demonstration should look like the following:
 
 {: .important} 
 Please put away all supplies and return the desk to a clean position when you are done with lab. Please also let us know if anything breaks so that we can maintain the robots.
+
+## Optional: Offset the End-Effector Frame
+The end-effector frame used above is located on the wrist roll axis, which is centered between the jaws when the gripper is fully closed. However, only one of the jaws moves when the gripper opens and closes, so an object held in the gripper will sit slightly off-center from this frame.
+
+As something to consider, you could instead define the end-effector frame on the inside edge of the fixed jaw by adding an offset in the -x axis of joint 5's frame, as shown in the diagram below. The benefit of this frame is that it makes it easier to align the gripper to the edges of blocks. The drawback is that the end-effector frame is no longer on the wrist roll axis, which makes the inverse kinematics that we will derive later slightly more involved.
+
+![SO-101 Forward Kinematics Diagram with Offset]({{ site.baseurl }}/assets/assignment6/FK-info-2.png)
+
+If you try this frame, you should see the following result from your forward kinematics test script:
+
+![Forward Kinematics Solution with Offset]({{ site.baseurl }}/assets/assignment6/solution-FK2.png)
+
+This is optional and is not part of the submission for this lab. Future labs will use the end-effector frame from Part 1.
 
 ## Submission Details
 To document the lab for this week, please record a video of your robot executing the full motion and upload it to youtube (it can be as an unlisted video). Then please include a link to the video with the homework submission. If you scan your homework, please make sure that the link is legible. As usual, also include in your submission a writeup (included in the homework submission) about what was implemented, and any challenges/difficulties that you had when writing/executing the code.

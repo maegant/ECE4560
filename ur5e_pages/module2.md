@@ -15,7 +15,7 @@ Solve for the joint angles that reach a desired pose using Newton–Raphson.
 ## 2a: Spatial Jacobian
 
 $$
-J^s = \begin{bmatrix} \xi'_1 & \cdots & \xi'_6 \end{bmatrix},
+J_s = \begin{bmatrix} \xi'_1 & \cdots & \xi'_6 \end{bmatrix},
 \qquad
 \xi'_i = \mathrm{Ad}_{\,e^{\hat{\xi}_1 \theta_1} \cdots e^{\hat{\xi}_{i-1} \theta_{i-1}}} \, \xi_i
 $$
@@ -34,7 +34,7 @@ Fill in `error_twist` in `inverse_kinematics.py` using `logm`.
 ## 2c: Newton–Raphson step
 
 $$
-\theta \leftarrow \theta + (J^s)^{\dagger} \, \xi
+\theta \leftarrow \theta + J_s^{\dagger} \, \xi
 $$
 
 Fill in the update in `inverse_kinematics_newton`. Use `np.linalg.pinv`.

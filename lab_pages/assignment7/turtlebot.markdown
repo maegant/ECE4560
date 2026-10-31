@@ -1,9 +1,9 @@
 ---
 layout: page
-title: 7 - Inverse Kinematics
+title: 7 - Midterm
 permalink: /assignment7-turtlebot/
 parent: Turtlebot
 nav_order: 7
 ---
 
-I'd like for the turtlebot group to also have hands-on experience with inverse kinematics. To do so, please also complete the SO-101 module for this week. 
+No lab 7 due to the second midterm.

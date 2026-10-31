@@ -110,11 +110,13 @@ import time
 import mujoco
 import mujoco.viewer
 from so101_mujoco_utils import set_initial_pose, send_position_command, move_to_pose_cubic
+from so101_forward_kinematics import BASE_HEIGHT
 from so101_inverse_kinematics import get_inverse_kinematics
 import numpy as np
 
 
 m = mujoco.MjModel.from_xml_path('model/scene_with_velocity.xml')
+m.body('base').pos[2] = BASE_HEIGHT  # raise the robot to match the metal base
 d = mujoco.MjData(m)
 
 size_block = 0.0285 #in meters (1.125 inches)
