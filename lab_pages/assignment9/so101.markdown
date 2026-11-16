@@ -234,7 +234,7 @@ If you are looking for an additional challenge, try implementing a straight line
 1. Implement IK in each control loop to track a straight line path in the end-effector position. If you want to still use a cubic spline for this method, you will need to implement the cubic spline for time rescaling as discussed in Lecture 21.
 2. Implement resolved-rate trajectory design (more complicated than necessary since we have closed-form solutions for IK).
 
-Below shows the results from Method 1 (using cubic splines for time rescaling with IK in the control loop tracking a straight-line path in task space). You will be implementing Method 2 for the homework component of Assignment 9. 
+Below shows the results from Method 1 (using cubic splines for time rescaling with IK in the control loop tracking a straight-line path in task space). You will be implementing Method 2 in UR5e simulation for the homework component of Assignment 9. 
 
 <div class="video-container">
   <iframe

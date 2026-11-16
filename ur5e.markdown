@@ -16,6 +16,7 @@ In these modules you implement the course material for a simulated
 the functions to fill in, and a script that runs the simulation using your code.
 
 1. [Forward Kinematics]({{ site.baseurl }}/ur5e-module1/)
+2. [Spatial Jacobian and Resolved Rate]({{ site.baseurl }}/ur5e-module2/)
 
 ## Setting up
 
@@ -34,10 +35,13 @@ Keep every file from every module in this one folder, and run all scripts from i
 
 ```
 ur5e/
-  ur5e_model/       (unzipped model)
-  transforms.py     (Module 1)
-  kinematics.py     (Module 1)
-  module1.py        (Module 1)
+  ur5e_model/          (unzipped model)
+  transforms.py        (Module 1)
+  kinematics.py        (Module 1)
+  module1.py           (Module 1)
+  module2_jacobian.py  (Module 2)
+  trajectories.py      (Module 2)
+  module2_path.py      (Module 2)
   ...
 ```
 

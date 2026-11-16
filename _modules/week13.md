@@ -8,5 +8,5 @@ November 17
 November 19
 : 22 - Wrenches and Forces
 
-November 20
+November 23
 : **HW 9 due**{: .label .label-red }
