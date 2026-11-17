@@ -3,7 +3,7 @@ title: Week 13
 ---
 
 November 17
-: 21 - Trajectory Design 4
+: 21 - [Trajectory Design 4](lecture21.pdf)
 
 November 19
 : 22 - Wrenches and Forces
